@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{6E0E1A07-7311-4F8C-B1BD-B3803B6E621E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{7A9F6A71-9A61-4817-AE86-9254999FA206}"
+	ProjectSection(SolutionItems) = preProject
+		global.json = global.json
+	EndProjectSection
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Hangfire.RecurringJobExtensions", "src\Hangfire.RecurringJobExtensions\Hangfire.RecurringJobExtensions.xproj", "{D75DFE5D-38CF-4150-8264-EB22E579237D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D75DFE5D-38CF-4150-8264-EB22E579237D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D75DFE5D-38CF-4150-8264-EB22E579237D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D75DFE5D-38CF-4150-8264-EB22E579237D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D75DFE5D-38CF-4150-8264-EB22E579237D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D75DFE5D-38CF-4150-8264-EB22E579237D} = {6E0E1A07-7311-4F8C-B1BD-B3803B6E621E}
+	EndGlobalSection
+EndGlobal

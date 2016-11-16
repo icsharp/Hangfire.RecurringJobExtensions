@@ -1,0 +1,32 @@
+﻿{
+	"version": "1.0.1-*",
+	"title": "Hangfire.RecurringJobExtensions",
+	"description": "Hangfire extensions for RecurringJob",
+	"authors": [ "icsharp" ],
+
+	"packOptions": {
+		"summary": "Hangfire extensions for RecurringJob",
+		"tags": [ "hangfire", "RecurringJob" ],
+		"owners": [ "icsharp" ],
+		"licenseUrl": "https://raw.githubusercontent.com/icsharp/Hangfire.RecurringJobExtensions/master/LICENSE",
+		"releaseNotes": "- Add support for Hangfire RecurringJob extesions, we can use RecurringJobAttribute to build RecurringJob automatically.",
+		"repository": {
+			"type": "git",
+			"url": "https://github.com/icsharp/Hangfire.RecurringJobExtensions"
+		}
+	},
+
+	"buildOptions": {
+		"warningsAsErrors": true,
+		"xmlDoc": true
+	},
+
+	"dependencies": {
+		"Hangfire.Core": "1.6.6"
+	},
+
+	"frameworks": {
+		"netstandard1.3": {},
+		"net45": {}
+	}
+}
