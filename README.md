@@ -5,7 +5,7 @@
 ![MIT License](https://img.shields.io/badge/license-MIT-orange.svg)
 
 This repo is the extension for [Hangfire](https://github.com/HangfireIO/Hangfire) to build `RecurringJob` automatically. We can use the attribute `RecurringJobAttribute` to assign the interface/instance/static method.
-When app start, `RecurringJob` will be add/update automatically.
+When app start, `RecurringJob` will be added/updated automatically.
 
 ```csharp
 public class RecurringJobService
