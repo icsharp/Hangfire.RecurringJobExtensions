@@ -4,7 +4,8 @@ using Hangfire.States;
 namespace Hangfire.RecurringJobExtensions
 {
 	/// <summary>
-	/// Creating <see cref="RecurringJob"/> with interface/instance/static method automatically.
+	/// Attribute to add or update <see cref="RecurringJob"/> automatically
+	/// by target it to interface/instance/static method.
 	/// </summary>
 	[AttributeUsage(AttributeTargets.Method)]
 	public class RecurringJobAttribute : Attribute
