@@ -9,10 +9,7 @@ namespace Hangfire.RecurringJobExtensions
 	/// </summary>
 	public class RecurringJobBuilder : IRecurringJobBuilder
 	{
-		/// <summary>
-		/// <see cref="IRecurringJobRegistry"/> interface.
-		/// </summary>
-		public IRecurringJobRegistry Registry { get; private set; }
+		private IRecurringJobRegistry _registry;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="RecurringJobBuilder"/>	with <see cref="IRecurringJobRegistry"/>.
@@ -20,11 +17,11 @@ namespace Hangfire.RecurringJobExtensions
 		/// <param name="registry"><see cref="IRecurringJobRegistry"/> interface.</param>
 		public RecurringJobBuilder(IRecurringJobRegistry registry)
 		{
-			Registry = registry;
+			_registry = registry;
 		}
 
 		/// <summary>
-		/// Create <see cref="RecurringJob"/> within specified interface or class.
+		/// Create <see cref="RecurringJob"/> with the provider for specified interface or class.
 		/// </summary>
 		/// <param name="typesProvider">Specified interface or class</param>
 		public void Build(Func<IEnumerable<Type>> typesProvider)
@@ -45,9 +42,23 @@ namespace Hangfire.RecurringJobExtensions
 
 					if (attribute == null || !attribute.Enabled) continue;
 
-					Registry.Register(method, attribute.Cron, attribute.TimeZone, attribute.Queue);
+					if (string.IsNullOrWhiteSpace(attribute.RecurringJobId))
+						_registry.Register(method, attribute.Cron, attribute.TimeZone, attribute.Queue);
+					else
+						_registry.Register(attribute.RecurringJobId, method, attribute.Cron, attribute.TimeZone, attribute.Queue);
 				}
 			}
+		}
+		/// <summary>
+		/// Create <see cref="RecurringJob"/> with the provider for specified list <see cref="RecurringJobInfo"/>.
+		/// </summary>
+		/// <param name="recurringJobInfoProvider">The provider to get <see cref="RecurringJobInfo"/> list.</param>
+		public void Build(Func<IEnumerable<RecurringJobInfo>> recurringJobInfoProvider)
+		{
+			if (recurringJobInfoProvider == null) throw new ArgumentNullException(nameof(recurringJobInfoProvider));
+
+			foreach (RecurringJobInfo recurringJobInfo in recurringJobInfoProvider())
+				_registry.Register(recurringJobInfo);
 		}
 	}
 }

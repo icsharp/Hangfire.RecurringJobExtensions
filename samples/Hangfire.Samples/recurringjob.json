@@ -1,0 +1,14 @@
+﻿[
+	{
+		"job-name": "My Job1",
+		"job-type": "Hangfire.Samples.MyJob1, Hangfire.Samples",
+		"cron-expression": "*/1 * * * *",
+		"timezone": "China Standard Time",
+		"queue": "jobs"
+	},
+	{
+		"job-name": "My Job2",
+		"job-type": "Hangfire.Samples.MyJob2, Hangfire.Samples",
+		"cron-expression": "*/5 * * * *"
+	}
+]

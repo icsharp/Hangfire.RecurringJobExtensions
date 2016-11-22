@@ -23,6 +23,10 @@ namespace Hangfire.RecurringJobExtensions
 		/// </summary>
 		public string Queue { get; private set; }
 		/// <summary>
+		/// The identifier of the RecurringJob
+		/// </summary>
+		public string RecurringJobId { get; set; }
+		/// <summary>
 		/// Whether to build RecurringJob automatically, default value is true. 
 		/// </summary>
 		public bool Enabled { get; set; } = true;
@@ -31,6 +35,12 @@ namespace Hangfire.RecurringJobExtensions
 		/// </summary>
 		/// <param name="cron">Cron expressions</param>
 		public RecurringJobAttribute(string cron) : this(cron, TimeZoneInfo.Local) { }
+		/// <summary>
+		/// Initializes a new instance of the <see cref="RecurringJobAttribute"/>
+		/// </summary>
+		/// <param name="cron">Cron expressions</param>
+		/// <param name="queue">Queue name</param>
+		public RecurringJobAttribute(string cron, string queue) : this(cron, TimeZoneInfo.Local, queue) { }
 		/// <summary>
 		/// Initializes a new instance of the <see cref="RecurringJobAttribute"/>
 		/// </summary>

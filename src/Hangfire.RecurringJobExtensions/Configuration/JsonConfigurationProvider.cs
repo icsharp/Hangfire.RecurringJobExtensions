@@ -1,0 +1,66 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection; 
+using Hangfire.Common;
+using Hangfire.States;
+
+namespace Hangfire.RecurringJobExtensions.Configuration
+{
+	/// <summary>
+	/// Represents a JSON file provider as an <see cref="IConfigurationProvider"/>.
+	/// </summary>
+	public class JsonConfigurationProvider : FileConfigurationProvider
+	{
+		/// <summary>
+		/// Initializes a new <see cref="JsonConfigurationProvider"/>.
+		/// </summary>
+		/// <param name="builder">The builder for <see cref="IRecurringJobBuilder"/>.</param>
+		/// <param name="configFile">The source settings file.</param>
+		/// <param name="reloadOnChange">Whether the <see cref="RecurringJob"/> should be reloaded if the file changes.</param>
+		public JsonConfigurationProvider(IRecurringJobBuilder builder, string configFile, bool reloadOnChange = true)
+			: base(builder, configFile, reloadOnChange) { }
+
+		/// <summary>
+		/// Loads the <see cref="RecurringJobInfo"/> for this source.
+		/// </summary>
+		/// <returns>The list of <see cref="RecurringJobInfo"/> for this provider.</returns>
+		public override IEnumerable<RecurringJobInfo> Load()
+		{
+			var jsonContent = ReadFromFile();
+
+			if (string.IsNullOrWhiteSpace(jsonContent)) throw new Exception("Json file content is empty.");
+
+			var jsonOptions = JobHelper.FromJson<List<RecurringJobJsonOptions>>(jsonContent);
+
+			foreach (var o in jsonOptions)
+				yield return Convert(o);
+		}
+
+		
+		private RecurringJobInfo Convert(RecurringJobJsonOptions option)
+		{
+#if NET45
+			if (option.JobType.BaseType != typeof(IRecurringJob))
+#else
+			if (!option.JobType.GetTypeInfo().ImplementedInterfaces.Contains(typeof(IRecurringJob)))
+#endif
+			{
+				throw new Exception($"job-type: {option.JobType} must impl the interface {typeof(IRecurringJob)}.");
+			}
+
+			return new RecurringJobInfo
+			{
+				RecurringJobId = option.JobName,
+#if NET45
+				Method = option.JobType.GetMethod(nameof(IRecurringJob.Execute)),
+#else
+				Method = option.JobType.GetTypeInfo().GetDeclaredMethod(nameof(IRecurringJob.Execute)),
+#endif
+				Cron = option.Cron,
+				Queue = option.Queue ?? EnqueuedState.DefaultQueue,
+				TimeZone = option.TimeZone ?? TimeZoneInfo.Local
+			};
+		}
+	}
+}

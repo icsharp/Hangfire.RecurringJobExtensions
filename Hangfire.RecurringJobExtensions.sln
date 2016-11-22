@@ -12,6 +12,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Hangfire.RecurringJobExtensions", "src\Hangfire.RecurringJobExtensions\Hangfire.RecurringJobExtensions.xproj", "{D75DFE5D-38CF-4150-8264-EB22E579237D}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{B04B5FCE-89A8-4A3E-9671-CB3070C89AAF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{F5091E02-C3A4-407E-995C-86E07A801832}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Hangfire.Samples", "samples\Hangfire.Samples\Hangfire.Samples.xproj", "{9DCBF5BA-414C-4E39-B264-CFD6C824AA66}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -22,11 +28,16 @@ Global
 		{D75DFE5D-38CF-4150-8264-EB22E579237D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D75DFE5D-38CF-4150-8264-EB22E579237D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D75DFE5D-38CF-4150-8264-EB22E579237D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9DCBF5BA-414C-4E39-B264-CFD6C824AA66}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9DCBF5BA-414C-4E39-B264-CFD6C824AA66}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9DCBF5BA-414C-4E39-B264-CFD6C824AA66}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9DCBF5BA-414C-4E39-B264-CFD6C824AA66}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{D75DFE5D-38CF-4150-8264-EB22E579237D} = {6E0E1A07-7311-4F8C-B1BD-B3803B6E621E}
+		{9DCBF5BA-414C-4E39-B264-CFD6C824AA66} = {B04B5FCE-89A8-4A3E-9671-CB3070C89AAF}
 	EndGlobalSection
 EndGlobal
