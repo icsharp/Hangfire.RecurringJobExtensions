@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Newtonsoft.Json;
 
 namespace Hangfire.RecurringJobExtensions.Configuration
@@ -55,5 +56,27 @@ namespace Hangfire.RecurringJobExtensions.Configuration
 		/// </summary>
 		/// <returns>true if value not null or empty, otherwise false.</returns>
 		public bool ShouldSerializeQueue() => !string.IsNullOrEmpty(Queue);
+		/// <summary>
+		/// 
+		/// </summary>
+		[JsonProperty("job-data")]
+		public IDictionary<string, object> ExtendedData { get; set; }
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <returns></returns>
+		public bool ShouldSerializeExtendedData() => ExtendedData != null && ExtendedData.Count > 0;
+
+		/// <summary>
+		/// 
+		/// </summary>
+		[JsonProperty("enable")]
+		public bool? Enable { get; set; }
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <returns></returns>
+		public bool ShouldSerializeEnable() => Enable != null;
 	}
 }

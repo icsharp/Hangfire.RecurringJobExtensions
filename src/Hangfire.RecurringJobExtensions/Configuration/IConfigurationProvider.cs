@@ -10,7 +10,7 @@ namespace Hangfire.RecurringJobExtensions.Configuration
 		/// <summary>
 		/// Loads configuration values from the source represented by this <see cref="IConfigurationProvider"/>.
 		/// </summary>
-		/// <returns></returns>
+		/// <returns>The list of <see cref="RecurringJobInfo"/>.</returns>
 		IEnumerable<RecurringJobInfo> Load();
 	}
 }

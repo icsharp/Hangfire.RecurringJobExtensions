@@ -47,6 +47,8 @@ namespace Hangfire.Samples
 
 				x.UseRecurringJob("recurringjob.json");
 
+				x.UseRecurringJob(typeof(RecurringJobService));
+
 				x.UseDefaultActivator();
 			});
 		}

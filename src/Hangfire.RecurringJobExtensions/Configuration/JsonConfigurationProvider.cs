@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection; 
+using System.Reflection;
 using Hangfire.Common;
 using Hangfire.States;
 
@@ -37,17 +37,10 @@ namespace Hangfire.RecurringJobExtensions.Configuration
 				yield return Convert(o);
 		}
 
-		
+
 		private RecurringJobInfo Convert(RecurringJobJsonOptions option)
 		{
-#if NET45
-			if (option.JobType.BaseType != typeof(IRecurringJob))
-#else
-			if (!option.JobType.GetTypeInfo().ImplementedInterfaces.Contains(typeof(IRecurringJob)))
-#endif
-			{
-				throw new Exception($"job-type: {option.JobType} must impl the interface {typeof(IRecurringJob)}.");
-			}
+			ValidateJsonOptions(option);
 
 			return new RecurringJobInfo
 			{
@@ -59,8 +52,26 @@ namespace Hangfire.RecurringJobExtensions.Configuration
 #endif
 				Cron = option.Cron,
 				Queue = option.Queue ?? EnqueuedState.DefaultQueue,
-				TimeZone = option.TimeZone ?? TimeZoneInfo.Local
+				TimeZone = option.TimeZone ?? TimeZoneInfo.Local,
+				ExtendedData = option.ExtendedData,
+				Enable = option.Enable ?? true
 			};
+		}
+
+		private void ValidateJsonOptions(RecurringJobJsonOptions option)
+		{
+			if (option == null) throw new ArgumentNullException(nameof(option));
+
+			if (string.IsNullOrWhiteSpace(option.JobName))
+			{
+				throw new Exception($"The json token 'job-name' is null, empty, or consists only of white-space.");
+			}
+
+			if (!option.JobType.GetTypeInfo().ImplementedInterfaces.Contains(typeof(IRecurringJob)))
+			{
+				throw new Exception($"job-type: {option.JobType} must impl the interface {typeof(IRecurringJob)}.");
+			}
+
 		}
 	}
 }

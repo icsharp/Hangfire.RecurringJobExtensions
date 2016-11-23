@@ -38,7 +38,7 @@ namespace Hangfire.RecurringJobExtensions
 			return configuration;
 		}
 		/// <summary>
-		/// Using a JSON configuration to build <see cref="RecurringJob"/> automatically.
+		/// Build <see cref="RecurringJob"/> automatically by using a JSON configuration
 		/// </summary>
 		/// <param name="configuration"><see cref="IGlobalConfiguration"/>.</param>
 		/// <param name="jsonFile">Json file for <see cref="RecurringJob"/> configuration.</param>

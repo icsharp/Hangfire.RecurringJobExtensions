@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq.Expressions;
 using System.Reflection;
-
+using Hangfire.Common;
 namespace Hangfire.RecurringJobExtensions
 {
 	/// <summary>
@@ -24,32 +24,9 @@ namespace Hangfire.RecurringJobExtensions
 			if (timeZone == null) throw new ArgumentNullException(nameof(timeZone));
 			if (queue == null) throw new ArgumentNullException(nameof(queue));
 
-			var parameters = method.GetParameters();
+			var jobId = method.GetRecurringJobId();
 
-			Expression[] args = new Expression[parameters.Length];
-
-			for (int i = 0; i < parameters.Length; i++)
-			{
-				args[i] = Expression.Default(parameters[i].ParameterType);
-			}
-
-			var x = Expression.Parameter(method.DeclaringType, "x");
-
-			var methodCall = method.IsStatic ? Expression.Call(method, args) : Expression.Call(x, method, args);
-
-			var addOrUpdate = Expression.Call(
-				typeof(RecurringJob),
-				nameof(RecurringJob.AddOrUpdate),
-				new Type[] { method.DeclaringType },
-				new Expression[]
-				{
-					Expression.Lambda(methodCall, x),
-					Expression.Constant(cron),
-					Expression.Constant(timeZone),
-					Expression.Constant(queue)
-				});
-
-			Expression.Lambda(addOrUpdate).Compile().DynamicInvoke();
+			Register(jobId, method, cron, timeZone, queue);
 		}
 		/// <summary>
 		/// Register RecurringJob via <see cref="MethodInfo"/>.
@@ -103,10 +80,7 @@ namespace Hangfire.RecurringJobExtensions
 		{
 			if (recurringJobInfo == null) throw new ArgumentNullException(nameof(recurringJobInfo));
 
-			if (string.IsNullOrWhiteSpace(recurringJobInfo.RecurringJobId))
-				Register(recurringJobInfo.Method, recurringJobInfo.Cron, recurringJobInfo.TimeZone, recurringJobInfo.Queue);
-			else
-				Register(recurringJobInfo.RecurringJobId, recurringJobInfo.Method, recurringJobInfo.Cron, recurringJobInfo.TimeZone, recurringJobInfo.Queue);
+			Register(recurringJobInfo.RecurringJobId, recurringJobInfo.Method, recurringJobInfo.Cron, recurringJobInfo.TimeZone, recurringJobInfo.Queue);
 		}
 	}
 }

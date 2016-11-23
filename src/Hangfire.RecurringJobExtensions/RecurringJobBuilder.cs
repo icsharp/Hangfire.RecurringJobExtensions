@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 
 namespace Hangfire.RecurringJobExtensions
@@ -30,22 +31,25 @@ namespace Hangfire.RecurringJobExtensions
 
 			foreach (var type in typesProvider())
 			{
-#if NET45
-                foreach (var method in type.GetMethods(BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static))
-#else
 				foreach (var method in type.GetTypeInfo().DeclaredMethods)
-#endif
 				{
 					if (!method.IsDefined(typeof(RecurringJobAttribute), false)) continue;
 
 					var attribute = method.GetCustomAttribute<RecurringJobAttribute>(false);
 
-					if (attribute == null || !attribute.Enabled) continue;
+					if (attribute == null) continue;
 
 					if (string.IsNullOrWhiteSpace(attribute.RecurringJobId))
-						_registry.Register(method, attribute.Cron, attribute.TimeZone, attribute.Queue);
-					else
-						_registry.Register(attribute.RecurringJobId, method, attribute.Cron, attribute.TimeZone, attribute.Queue);
+					{
+						attribute.RecurringJobId = method.GetRecurringJobId();
+					}
+
+					if (!attribute.Enabled)
+					{
+						RecurringJob.RemoveIfExists(attribute.RecurringJobId);
+						continue;
+					}
+					_registry.Register(attribute.RecurringJobId, method, attribute.Cron, attribute.TimeZone, attribute.Queue);
 				}
 			}
 		}
@@ -57,8 +61,59 @@ namespace Hangfire.RecurringJobExtensions
 		{
 			if (recurringJobInfoProvider == null) throw new ArgumentNullException(nameof(recurringJobInfoProvider));
 
-			foreach (RecurringJobInfo recurringJobInfo in recurringJobInfoProvider())
+			var recurringJobInfos = recurringJobInfoProvider().ToList();
+
+			if (recurringJobInfos == null || recurringJobInfos.Count == 0) return;
+
+			foreach (RecurringJobInfo recurringJobInfo in recurringJobInfos)
+			{
+				if (string.IsNullOrWhiteSpace(recurringJobInfo.RecurringJobId))
+				{
+					throw new Exception($"The property of {nameof(recurringJobInfo.RecurringJobId)} is null, empty, or consists only of white-space.");
+				}
+				if (!recurringJobInfo.Enable)
+				{
+					RecurringJob.RemoveIfExists(recurringJobInfo.RecurringJobId);
+					continue;
+				}
+
 				_registry.Register(recurringJobInfo);
+			}
+
+			var extendedDataJobs = recurringJobInfos.Where(x => x.ExtendedData != null && x.ExtendedData.Count > 0).ToList();
+
+			if (extendedDataJobs == null || extendedDataJobs.Count == 0) return;
+
+			var serverFilter = GetOrAddServerFilter();
+
+			foreach (var recurringJobInfo in extendedDataJobs)
+			{
+				serverFilter.RecurringJobInfos.AddOrUpdate(
+					recurringJobInfo.RecurringJobId,
+					recurringJobInfo,
+					(key, oldValue) => (recurringJobInfo != oldValue) ? recurringJobInfo : oldValue);
+			}
+		}
+		private RecurringJobServerFilter GetOrAddServerFilter()
+		{
+			RecurringJobServerFilter filter = null;
+
+			var enumerator = GlobalJobFilters.Filters.GetEnumerator();
+			while (enumerator.MoveNext())
+			{
+				if (enumerator.Current.Instance.GetType() == typeof(RecurringJobServerFilter))
+				{
+					filter = enumerator.Current.Instance as RecurringJobServerFilter;
+				}
+			}
+
+			if (filter == null)
+			{
+				filter = new RecurringJobServerFilter();
+
+				GlobalJobFilters.Filters.Add(filter);
+			}
+			return filter;
 		}
 	}
 }

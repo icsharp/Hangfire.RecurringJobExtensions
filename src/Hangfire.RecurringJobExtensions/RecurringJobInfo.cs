@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Reflection;
 
 namespace Hangfire.RecurringJobExtensions
@@ -29,5 +30,14 @@ namespace Hangfire.RecurringJobExtensions
 		/// Method to execute while <see cref="RecurringJob"/> running.
 		/// </summary>
 		public MethodInfo Method { get; set; }
+		/// <summary>
+		/// 
+		/// </summary>
+		public IDictionary<string, object> ExtendedData { get; set; }
+
+		/// <summary>
+		/// 
+		/// </summary>
+		public bool Enable { get; set; }
 	}
 }

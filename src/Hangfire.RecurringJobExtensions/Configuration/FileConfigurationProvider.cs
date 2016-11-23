@@ -64,13 +64,13 @@ namespace Hangfire.RecurringJobExtensions.Configuration
 		/// <summary>
 		/// Loads the data for this provider.
 		/// </summary>
-		/// <returns></returns>
+		/// <returns>The list of <see cref="RecurringJobInfo"/>.</returns>
 		public abstract IEnumerable<RecurringJobInfo> Load();
 
 		/// <summary>
 		/// Reads from config file.
 		/// </summary>
-		/// <returns></returns>
+		/// <returns>The string content reading from file.</returns>
 		protected virtual string ReadFromFile()
 		{
 			if (!File.Exists(ConfigFile))
