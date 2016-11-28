@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using Hangfire.Logging;
+using System.Linq;
+using System.Security;
 using System.Threading;
+using Hangfire.Logging;
 
 namespace Hangfire.RecurringJobExtensions.Configuration
 {
@@ -52,8 +54,50 @@ namespace Hangfire.RecurringJobExtensions.Configuration
 			{
 				_logger.Info($"File {e.Name} changed, try to reload configuration again...");
 
-				_builder.Build(() => Load());
+				var recurringJobInfos = Load().ToList();
+
+				if (recurringJobInfos == null || recurringJobInfos.Count == 0) return;
+
+				_builder.Build(() => recurringJobInfos);
+
+				var serverFilter = FindServerFilter();
+
+				if (serverFilter == null) return;
+
+				foreach (var recurringJobInfo in recurringJobInfos)
+				{
+					if (!recurringJobInfo.Enable
+						|| recurringJobInfo.ExtendedData == null
+						|| recurringJobInfo.ExtendedData.Count == 0)
+					{
+						RecurringJobInfo job = null;
+						serverFilter.RecurringJobInfos.TryRemove(recurringJobInfo.RecurringJobId, out job);
+						continue;
+					}
+					serverFilter.RecurringJobInfos.AddOrUpdate(
+						 recurringJobInfo.RecurringJobId,
+						 recurringJobInfo,
+						 (key, oldValue) => (recurringJobInfo != oldValue) ? recurringJobInfo : oldValue);
+				}
 			}
+		}
+
+		private ExtendedDataJobFilter FindServerFilter()
+		{
+			ExtendedDataJobFilter filter = null;
+
+			var enumerator = GlobalJobFilters.Filters.GetEnumerator();
+
+			while (enumerator.MoveNext())
+			{
+				if (enumerator.Current.Instance.GetType() == typeof(ExtendedDataJobFilter))
+				{
+					filter = enumerator.Current.Instance as ExtendedDataJobFilter;
+					break;
+				}
+			}
+
+			return filter;
 		}
 
 		/// <summary>
@@ -76,7 +120,7 @@ namespace Hangfire.RecurringJobExtensions.Configuration
 			if (!File.Exists(ConfigFile))
 				throw new FileNotFoundException($"The json file {ConfigFile} does not exist.");
 
-			var jsonContent = string.Empty;
+			var content = string.Empty;
 
 			for (int i = 0; i < NumberOfRetries; ++i)
 			{
@@ -85,13 +129,18 @@ namespace Hangfire.RecurringJobExtensions.Configuration
 					// Do stuff with file  
 					using (var file = new FileStream(ConfigFile, FileMode.OpenOrCreate, FileAccess.Read, FileShare.Read))
 					using (StreamReader reader = new StreamReader(file))
-						jsonContent = reader.ReadToEnd();
+						content = reader.ReadToEnd();
 
 					break; // When done we can break loop
 				}
-				catch (IOException e)
+				catch (Exception ex) when (
+				ex is IOException ||
+				ex is SecurityException ||
+				ex is UnauthorizedAccessException)
 				{
-					_logger.DebugException($"read file {ConfigFile} error.", e);
+					// Swallow the exception.
+					_logger.DebugException($"read file {ConfigFile} error.", ex);
+
 					// You may check error code to filter some exceptions, not every error
 					// can be recovered.
 					if (i == NumberOfRetries) // Last one, (re)throw exception and exit
@@ -100,7 +149,8 @@ namespace Hangfire.RecurringJobExtensions.Configuration
 					Thread.Sleep(DelayOnRetry);
 				}
 			}
-			return jsonContent;
+
+			return content;
 		}
 
 		/// <summary>
@@ -108,7 +158,7 @@ namespace Hangfire.RecurringJobExtensions.Configuration
 		/// </summary>
 		public virtual void Dispose()
 		{
-			_fileWatcher.Dispose();
+			_fileWatcher?.Dispose();
 		}
 	}
 }

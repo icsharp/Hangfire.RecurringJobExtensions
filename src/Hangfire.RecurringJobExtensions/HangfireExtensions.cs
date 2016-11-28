@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.IO;
 using Hangfire.RecurringJobExtensions.Configuration;
 
@@ -63,7 +64,14 @@ namespace Hangfire.RecurringJobExtensions
 
 			IConfigurationProvider provider = new JsonConfigurationProvider(builder, configFile, reloadOnChange);
 
-			builder.Build(() => provider.Load());
+			var jobInfos = provider.Load().ToList();
+
+			builder.Build(() => jobInfos);
+
+			if (reloadOnChange)
+			{
+				GlobalConfiguration.Configuration.UseFilter(new ExtendedDataJobFilter(jobInfos));
+			}
 
 			return configuration;
 		}

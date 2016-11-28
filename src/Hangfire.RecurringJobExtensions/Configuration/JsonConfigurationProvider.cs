@@ -37,7 +37,6 @@ namespace Hangfire.RecurringJobExtensions.Configuration
 				yield return Convert(o);
 		}
 
-
 		private RecurringJobInfo Convert(RecurringJobJsonOptions option)
 		{
 			ValidateJsonOptions(option);

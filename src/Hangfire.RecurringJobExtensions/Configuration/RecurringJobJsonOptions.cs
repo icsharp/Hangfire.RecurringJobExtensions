@@ -77,6 +77,6 @@ namespace Hangfire.RecurringJobExtensions.Configuration
 		/// 
 		/// </summary>
 		/// <returns></returns>
-		public bool ShouldSerializeEnable() => Enable != null;
+		public bool ShouldSerializeEnable() => Enable.HasValue;
 	}
 }

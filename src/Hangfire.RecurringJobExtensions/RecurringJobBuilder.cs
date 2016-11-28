@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 
 namespace Hangfire.RecurringJobExtensions
@@ -61,11 +60,7 @@ namespace Hangfire.RecurringJobExtensions
 		{
 			if (recurringJobInfoProvider == null) throw new ArgumentNullException(nameof(recurringJobInfoProvider));
 
-			var recurringJobInfos = recurringJobInfoProvider().ToList();
-
-			if (recurringJobInfos == null || recurringJobInfos.Count == 0) return;
-
-			foreach (RecurringJobInfo recurringJobInfo in recurringJobInfos)
+			foreach (RecurringJobInfo recurringJobInfo in recurringJobInfoProvider())
 			{
 				if (string.IsNullOrWhiteSpace(recurringJobInfo.RecurringJobId))
 				{
@@ -76,44 +71,8 @@ namespace Hangfire.RecurringJobExtensions
 					RecurringJob.RemoveIfExists(recurringJobInfo.RecurringJobId);
 					continue;
 				}
-
 				_registry.Register(recurringJobInfo);
 			}
-
-			var extendedDataJobs = recurringJobInfos.Where(x => x.ExtendedData != null && x.ExtendedData.Count > 0).ToList();
-
-			if (extendedDataJobs == null || extendedDataJobs.Count == 0) return;
-
-			var serverFilter = GetOrAddServerFilter();
-
-			foreach (var recurringJobInfo in extendedDataJobs)
-			{
-				serverFilter.RecurringJobInfos.AddOrUpdate(
-					recurringJobInfo.RecurringJobId,
-					recurringJobInfo,
-					(key, oldValue) => (recurringJobInfo != oldValue) ? recurringJobInfo : oldValue);
-			}
-		}
-		private RecurringJobServerFilter GetOrAddServerFilter()
-		{
-			RecurringJobServerFilter filter = null;
-
-			var enumerator = GlobalJobFilters.Filters.GetEnumerator();
-			while (enumerator.MoveNext())
-			{
-				if (enumerator.Current.Instance.GetType() == typeof(RecurringJobServerFilter))
-				{
-					filter = enumerator.Current.Instance as RecurringJobServerFilter;
-				}
-			}
-
-			if (filter == null)
-			{
-				filter = new RecurringJobServerFilter();
-
-				GlobalJobFilters.Filters.Add(filter);
-			}
-			return filter;
 		}
 	}
 }
