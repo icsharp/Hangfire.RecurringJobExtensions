@@ -39,5 +39,14 @@ namespace Hangfire.RecurringJobExtensions
 		/// 
 		/// </summary>
 		public bool Enable { get; set; }
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <returns></returns>
+		public override string ToString()
+		{
+			return Method.GetRecurringJobId();
+		}
 	}
 }

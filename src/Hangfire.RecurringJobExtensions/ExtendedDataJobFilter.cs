@@ -26,7 +26,7 @@ namespace Hangfire.RecurringJobExtensions
 
 			//initialize data if exists extendeddata.
 			foreach (var jobInfo in recurringJobInfos.Where(x => x.Enable && x.ExtendedData != null && x.ExtendedData.Count > 0))
-				RecurringJobInfos.TryAdd(jobInfo.RecurringJobId, jobInfo);
+				RecurringJobInfos.TryAdd(jobInfo.ToString(), jobInfo);
 		}
 
 		/// <summary>
@@ -37,15 +37,15 @@ namespace Hangfire.RecurringJobExtensions
 		{
 			if (RecurringJobInfos == null
 				|| RecurringJobInfos.Count == 0
-				|| !RecurringJobInfos.ContainsKey(filterContext.BackgroundJob.Id)) return;
+				|| !RecurringJobInfos.ContainsKey(filterContext.BackgroundJob.Job.ToString())) return;
 
-			var jobInfo = RecurringJobInfos[filterContext.BackgroundJob.Id];
+			var jobInfo = RecurringJobInfos[filterContext.BackgroundJob.Job.ToString()];
 
 			if (jobInfo == null
 				|| jobInfo.ExtendedData == null
 				|| jobInfo.ExtendedData.Count == 0) return;
 
-			var jobDataKey = $"recurringjob-info-{jobInfo.Method.GetRecurringJobId()}";
+			var jobDataKey = $"recurringjob-info-{jobInfo.ToString()}";
 
 			filterContext.Items[jobDataKey] = jobInfo.ExtendedData;
 		}

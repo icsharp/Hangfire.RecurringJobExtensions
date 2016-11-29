@@ -71,11 +71,11 @@ namespace Hangfire.RecurringJobExtensions.Configuration
 						|| recurringJobInfo.ExtendedData.Count == 0)
 					{
 						RecurringJobInfo job = null;
-						serverFilter.RecurringJobInfos.TryRemove(recurringJobInfo.RecurringJobId, out job);
+						serverFilter.RecurringJobInfos.TryRemove(recurringJobInfo.ToString(), out job);
 						continue;
 					}
 					serverFilter.RecurringJobInfos.AddOrUpdate(
-						 recurringJobInfo.RecurringJobId,
+						 recurringJobInfo.ToString(),
 						 recurringJobInfo,
 						 (key, oldValue) => (recurringJobInfo != oldValue) ? recurringJobInfo : oldValue);
 				}

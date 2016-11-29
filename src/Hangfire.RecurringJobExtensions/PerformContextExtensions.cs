@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Hangfire.Common;
 using Hangfire.Server;
 
 namespace Hangfire.RecurringJobExtensions
@@ -19,7 +20,7 @@ namespace Hangfire.RecurringJobExtensions
 		{
 			if (string.IsNullOrEmpty(name)) throw new ArgumentNullException(nameof(name));
 
-			var jobDataKey = $"recurringjob-info-{context.BackgroundJob.Job.Method.GetRecurringJobId()}";
+			var jobDataKey = $"recurringjob-info-{context.BackgroundJob.Job.ToString()}";
 
 			if (!context.Items.ContainsKey(jobDataKey)) return null;
 
@@ -42,7 +43,9 @@ namespace Hangfire.RecurringJobExtensions
 		{
 			var o = GetJobData(context, name);
 
-			return o == null ? default(T) : (T)o;
+			var json = JobHelper.ToJson(o);
+
+			return JobHelper.FromJson<T>(json);
 		}
 	}
 }

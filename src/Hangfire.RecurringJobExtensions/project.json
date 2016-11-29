@@ -22,9 +22,9 @@
 		"xmlDoc": true
 	},
 
-	"dependencies": {
-		"Hangfire.Core": "1.6.6"
-	},
+    "dependencies": {
+        "Hangfire.Core": "1.6.7"
+    },
 
 	"frameworks": {
         "netstandard1.3": {

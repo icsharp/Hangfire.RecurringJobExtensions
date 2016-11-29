@@ -1,0 +1,14 @@
+﻿[
+	{
+		"job-name": "My Job1",
+		"job-type": "Hangfire.RecurringJobExtensions.Tests.MyJob1, Hangfire.RecurringJobExtensions.Tests",
+		"cron-expression": "*/1 * * * *",
+		"timezone": "China Standard Time",
+		"queue": "jobs"
+	},
+	{
+		"job-name": "My Job2",
+		"job-type": "Hangfire.RecurringJobExtensions.Tests.MyJob2, Hangfire.RecurringJobExtensions.Tests",
+		"cron-expression": "*/5 * * * *"
+	}
+]
