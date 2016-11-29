@@ -3,3 +3,8 @@ before_build:
 - cmd: dotnet restore
 build:
   verbosity: minimal
+test_script:
+- cmd: >-
+    cd test\Hangfire.RecurringJobExtensions.Tests
+
+    dotnet test
