@@ -6,16 +6,16 @@ using Hangfire.Server;
 namespace Hangfire.RecurringJobExtensions
 {
 	/// <summary>
-	/// 
+	/// Extensions for <see cref="PerformContext"/>.
 	/// </summary>
 	public static class PerformContextExtensions
 	{
 		/// <summary>
-		/// 
+		/// Gets job data from <see cref="PerformContext"/> if json configuration exists token 'job-data'.
 		/// </summary>
-		/// <param name="context"></param>
-		/// <param name="name"></param>
-		/// <returns></returns>
+		/// <param name="context">The <see cref="PerformContext"/>.</param>
+		/// <param name="name">The dictionary key from the property <see cref="RecurringJobInfo.ExtendedData"/></param>
+		/// <returns>The value from the property <see cref="RecurringJobInfo.ExtendedData"/></returns>
 		public static object GetJobData(this PerformContext context, string name)
 		{
 			if (string.IsNullOrEmpty(name)) throw new ArgumentNullException(nameof(name));
@@ -33,12 +33,12 @@ namespace Hangfire.RecurringJobExtensions
 			return jobData[name];
 		}
 		/// <summary>
-		/// 
+		/// Gets job data from <see cref="PerformContext"/> if json configuration exists token 'job-data'.
 		/// </summary>
-		/// <typeparam name="T"></typeparam>
-		/// <param name="context"></param>
-		/// <param name="name"></param>
-		/// <returns></returns>
+		/// <typeparam name="T">The specified type to json value.</typeparam>
+		/// <param name="context">The <see cref="PerformContext"/>.</param>
+		/// <param name="name">The dictionary key from the property <see cref="RecurringJobInfo.ExtendedData"/></param>
+		/// <returns>The value from the property <see cref="RecurringJobInfo.ExtendedData"/></returns>
 		public static T GetJobData<T>(this PerformContext context, string name)
 		{
 			var o = GetJobData(context, name);

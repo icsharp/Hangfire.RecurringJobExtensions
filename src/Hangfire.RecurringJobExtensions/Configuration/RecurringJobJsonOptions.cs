@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using Hangfire.Server;
 
 namespace Hangfire.RecurringJobExtensions.Configuration
 {
@@ -57,26 +58,27 @@ namespace Hangfire.RecurringJobExtensions.Configuration
 		/// <returns>true if value not null or empty, otherwise false.</returns>
 		public bool ShouldSerializeQueue() => !string.IsNullOrEmpty(Queue);
 		/// <summary>
-		/// 
+		/// The <see cref="RecurringJob"/> data persisted in <see cref="PerformContext"/> with server filter <seealso cref="ExtendedDataJobFilter"/>.  
 		/// </summary>
 		[JsonProperty("job-data")]
 		public IDictionary<string, object> ExtendedData { get; set; }
 		/// <summary>
-		/// 
+		/// Whether the property <see cref="ExtendedData"/> can be serialized or not.
 		/// </summary>
-		/// <returns></returns>
+		/// <returns>true if value not null or count is zero, otherwise false.</returns>
 		public bool ShouldSerializeExtendedData() => ExtendedData != null && ExtendedData.Count > 0;
 
 		/// <summary>
-		/// 
+		/// Whether the <see cref="RecurringJob"/> can be added/updated,
+		/// default value is true, if false it will be deleted automatically.
 		/// </summary>
 		[JsonProperty("enable")]
 		public bool? Enable { get; set; }
 
 		/// <summary>
-		/// 
+		/// Whether the property <see cref="Enable"/> can be serialized or not.
 		/// </summary>
-		/// <returns></returns>
+		/// <returns>true if value is not null, otherwise false.</returns>
 		public bool ShouldSerializeEnable() => Enable.HasValue;
 	}
 }

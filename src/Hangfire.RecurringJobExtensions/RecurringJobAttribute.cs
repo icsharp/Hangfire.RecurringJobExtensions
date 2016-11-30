@@ -27,7 +27,8 @@ namespace Hangfire.RecurringJobExtensions
 		/// </summary>
 		public string RecurringJobId { get; set; }
 		/// <summary>
-		/// Whether to build RecurringJob automatically, default value is true. 
+		/// Whether to build RecurringJob automatically, default value is true.
+		/// If false it will be deleted automatically.
 		/// </summary>
 		public bool Enabled { get; set; } = true;
 		/// <summary>

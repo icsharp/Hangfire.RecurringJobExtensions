@@ -10,7 +10,7 @@ namespace Hangfire.RecurringJobExtensions
 		/// <summary>
 		/// Execute the <see cref="RecurringJob"/>.
 		/// </summary>
-		/// <param name="context">The context for <see cref="PerformContext"/>.</param>
+		/// <param name="context">The context to <see cref="PerformContext"/>.</param>
 		void Execute(PerformContext context);
 	}
 }

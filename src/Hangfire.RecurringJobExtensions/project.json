@@ -10,7 +10,7 @@
 		"owners": [ "icsharp" ],
 		"projectUrl": "https://github.com/icsharp/Hangfire.RecurringJobExtensions",
 		"licenseUrl": "https://raw.githubusercontent.com/icsharp/Hangfire.RecurringJobExtensions/master/LICENSE",
-		"releaseNotes": "- Add support for Hangfire RecurringJob extesions, we can use RecurringJobAttribute to build RecurringJob automatically.",
+		"releaseNotes": "Add support for Hangfire RecurringJob extesions, we can use RecurringJobAttribute or Json configuration file to build RecurringJob automatically.",
 		"repository": {
 			"type": "git",
 			"url": "https://github.com/icsharp/Hangfire.RecurringJobExtensions"
@@ -22,16 +22,16 @@
 		"xmlDoc": true
 	},
 
-    "dependencies": {
-        "Hangfire.Core": "1.6.7"
-    },
+	"dependencies": {
+		"Hangfire.Core": "1.6.7"
+	},
 
 	"frameworks": {
-        "netstandard1.3": {
-            "dependencies": {
-                "System.IO.FileSystem.Watcher": "4.3.0"
-            }
-        },
+		"netstandard1.3": {
+			"dependencies": {
+				"System.IO.FileSystem.Watcher": "4.3.0"
+			}
+		},
 		"net45": {
 			"frameworkAssemblies": {
 				"System.Numerics": "4.0.0.0"
