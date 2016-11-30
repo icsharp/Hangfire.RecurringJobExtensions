@@ -109,7 +109,7 @@ JSON Token | Description
 **cron-expression** | *[required]* Cron expressions.
 timezone | *[optional]* Default value is `TimeZoneInfo.Local`.
 queue | *[optional]* The specified queue name , default value is `default`.
-job-data | *[optional]* Likely to the [quartz.net](http://www.quartz-scheduler.net/) `JobDataMap`, it is can be deserialized to the type `Dictionary<string,object>`.
+job-data | *[optional]* Similar to the [quartz.net](http://www.quartz-scheduler.net/) `JobDataMap`, it is can be deserialized to the type `Dictionary<string,object>`.
 enable | *[optional]* Whether the `RecurringJob` can be added/updated, default value is true, if false `RecurringJob` will be deleted automatically.
 
 *To the json token `job-data`, we can use extension method to get data with specified key from `PerformContext` when recurring job running.*
