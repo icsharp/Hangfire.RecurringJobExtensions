@@ -1,6 +1,6 @@
 {
 	"dependencies": {
-		"Hangfire.RecurringJobExtensions": "1.1.0-*",
+		"Hangfire.RecurringJobExtensions": "1.1.2-*",
 		"Hangfire.Console": "1.1.5",
 		"Hangfire.AspNetCore": "1.6.7",
 		"Hangfire.Core": "1.6.7",

@@ -75,5 +75,22 @@ namespace Hangfire.RecurringJobExtensions
 
 			return configuration;
 		}
+
+		/// <summary>
+		/// Build <see cref="RecurringJob"/> automatically with <seealso cref="IConfigurationProvider"/>.
+		/// </summary>
+		/// <param name="configuration"><see cref="IGlobalConfiguration"/>.</param>
+		/// <param name="provider"><see cref="IConfigurationProvider"/></param>
+		/// <returns><see cref="IGlobalConfiguration"/>.</returns>
+		public static IGlobalConfiguration UseRecurringJob(this IGlobalConfiguration configuration, IConfigurationProvider provider)
+		{
+			if (provider == null) throw new ArgumentNullException(nameof(provider));
+
+			IRecurringJobBuilder builder = new RecurringJobBuilder(new RecurringJobRegistry());
+
+			builder.Build(() => provider.Load());
+
+			return configuration;
+		}
 	}
 }

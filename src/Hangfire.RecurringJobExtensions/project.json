@@ -1,5 +1,5 @@
 {
-	"version": "1.1.0-*",
+	"version": "1.1.2-*",
 	"title": "Hangfire.RecurringJobExtensions",
 	"description": "Hangfire extensions for RecurringJob",
 	"authors": [ "icsharp" ],
@@ -23,7 +23,7 @@
 	},
 
 	"dependencies": {
-		"Hangfire.Core": "1.6.7"
+		"Hangfire.Core": "1.6.0"
 	},
 
 	"frameworks": {
