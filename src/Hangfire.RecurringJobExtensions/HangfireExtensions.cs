@@ -68,10 +68,7 @@ namespace Hangfire.RecurringJobExtensions
 
 			builder.Build(() => jobInfos);
 
-			if (reloadOnChange)
-			{
-				GlobalConfiguration.Configuration.UseFilter(new ExtendedDataJobFilter(jobInfos));
-			}
+			GlobalConfiguration.Configuration.UseFilter(new ExtendedDataJobFilter(jobInfos));
 
 			return configuration;
 		}
@@ -88,7 +85,11 @@ namespace Hangfire.RecurringJobExtensions
 
 			IRecurringJobBuilder builder = new RecurringJobBuilder(new RecurringJobRegistry());
 
-			builder.Build(() => provider.Load());
+			var jobInfos = provider.Load().ToList();
+
+			builder.Build(() => jobInfos);
+
+			GlobalConfiguration.Configuration.UseFilter(new ExtendedDataJobFilter(jobInfos));
 
 			return configuration;
 		}
