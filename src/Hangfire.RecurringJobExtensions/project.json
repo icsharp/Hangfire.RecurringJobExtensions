@@ -5,7 +5,7 @@
 	"authors": [ "icsharp" ],
 
 	"packOptions": {
-		"summary": "Hangfire extensions for RecurringJob",
+		"summary": "Extensions for Hangfire to build RecurringJob automatically.",
 		"tags": [ "hangfire", "RecurringJob" ],
 		"owners": [ "icsharp" ],
 		"projectUrl": "https://github.com/icsharp/Hangfire.RecurringJobExtensions",
