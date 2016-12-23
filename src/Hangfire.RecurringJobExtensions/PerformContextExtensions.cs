@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Hangfire.Common;
 using Hangfire.Server;
 
@@ -46,6 +47,27 @@ namespace Hangfire.RecurringJobExtensions
 			var json = JobHelper.ToJson(o);
 
 			return JobHelper.FromJson<T>(json);
+		}
+		/// <summary>
+		/// Persists job data to <see cref="PerformContext"/>.
+		/// </summary>
+		/// <param name="context">The <see cref="PerformContext"/>.</param>
+		/// <param name="name">The dictionary key from the property <see cref="RecurringJobInfo.ExtendedData"/></param>
+		/// <param name="value">The persisting value.</param>
+		public static void SetJobData(this PerformContext context, string name, object value)
+		{
+			if (string.IsNullOrEmpty(name)) throw new ArgumentNullException(nameof(name));
+
+			var jobDataKey = $"recurringjob-info-{context.BackgroundJob.Job.ToString()}";
+
+			if (!context.Items.ContainsKey(jobDataKey))
+				throw new KeyNotFoundException($"The job data key: {jobDataKey} is not found.");
+
+			var jobData = context.Items[jobDataKey] as IDictionary<string, object>;
+
+			if (jobData == null) jobData = new Dictionary<string, object>();
+
+			jobData[name] = value;
 		}
 	}
 }

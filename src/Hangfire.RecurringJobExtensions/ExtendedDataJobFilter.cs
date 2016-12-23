@@ -41,13 +41,11 @@ namespace Hangfire.RecurringJobExtensions
 
 			var jobInfo = RecurringJobInfos[filterContext.BackgroundJob.Job.ToString()];
 
-			if (jobInfo == null
-				|| jobInfo.ExtendedData == null
-				|| jobInfo.ExtendedData.Count == 0) return;
+			if (jobInfo == null) return;
 
 			var jobDataKey = $"recurringjob-info-{jobInfo.ToString()}";
 
-			filterContext.Items[jobDataKey] = jobInfo.ExtendedData;
+			filterContext.Items[jobDataKey] = jobInfo.ExtendedData ?? new Dictionary<string, object>();
 		}
 		/// <summary>
 		/// Called after the performance of the job.

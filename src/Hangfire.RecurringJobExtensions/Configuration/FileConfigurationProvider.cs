@@ -84,20 +84,9 @@ namespace Hangfire.RecurringJobExtensions.Configuration
 
 		private ExtendedDataJobFilter FindServerFilter()
 		{
-			ExtendedDataJobFilter filter = null;
+			var jobFilter = GlobalJobFilters.Filters.FirstOrDefault(x => x.Instance.GetType() == typeof(ExtendedDataJobFilter));
 
-			var enumerator = GlobalJobFilters.Filters.GetEnumerator();
-
-			while (enumerator.MoveNext())
-			{
-				if (enumerator.Current.Instance.GetType() == typeof(ExtendedDataJobFilter))
-				{
-					filter = enumerator.Current.Instance as ExtendedDataJobFilter;
-					break;
-				}
-			}
-
-			return filter;
+			return jobFilter.Instance as ExtendedDataJobFilter;
 		}
 
 		/// <summary>
