@@ -21,16 +21,29 @@ We can use the attribute `RecurringJobAttribute` to assign the interface/instanc
 public class RecurringJobService
 {
     [RecurringJob("*/1 * * * *")]
-    [DisplayName("InstanceTestJob")]
     [Queue("jobs")]
+    public void TestJob1(PerformContext context)
+    {
+        context.WriteLine($"{DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")} TestJob1 Running ...");
+    }
+    [RecurringJob("*/2 * * * *", RecurringJobId = "TestJob2")]
+    [Queue("jobs")]
+    public void TestJob2(PerformContext context)
+    {
+        context.WriteLine($"{DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")} TestJob2 Running ...");
+    }
+    [RecurringJob("*/2 * * * *", "China Standard Time", "jobs")]
+    public void TestJob3(PerformContext context)
+    {
+        context.WriteLine($"{DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")} TestJob3 Running ...");
+    }
+    [RecurringJob("*/5 * * * *", "jobs")]
     public void InstanceTestJob(PerformContext context)
     {
         context.WriteLine($"{DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")} InstanceTestJob Running ...");
     }
 
-    [RecurringJob("*/5 * * * *")]
-    [DisplayName("JobStaticTest")]
-    [Queue("jobs")]
+    [RecurringJob("*/6 * * * *", "UTC", "jobs")]
     public static void StaticTestJob(PerformContext context)
     {
         context.WriteLine($"{DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")} StaticTestJob Running ...");
@@ -112,10 +125,12 @@ queue | *[optional]* The specified queue name , default value is `default`.
 job-data | *[optional]* Similar to the [quartz.net](http://www.quartz-scheduler.net/) `JobDataMap`, it is can be deserialized to the type `Dictionary<string,object>`.
 enable | *[optional]* Whether the `RecurringJob` can be added/updated, default value is true, if false `RecurringJob` will be deleted automatically.
 
-*To the json token `job-data`, we can use extension method to get data with specified key from `PerformContext` when recurring job running.*
+*To the json token `job-data`, we can use extension method to get/set data with specified key from `PerformContext` when recurring job running.*
 
 ```csharp
-var runningTimes = context.GetJobData<int>("RunningTimes");
+var intVal = context.GetJobData<int>("IntVal");
+
+context.SetJobData("IntVal", ++intVal);
 ```
 
 ## Building RecurringJob
