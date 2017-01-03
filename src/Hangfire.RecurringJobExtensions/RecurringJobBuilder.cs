@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using Hangfire.States;
 
 namespace Hangfire.RecurringJobExtensions
 {
@@ -48,7 +49,12 @@ namespace Hangfire.RecurringJobExtensions
 						RecurringJob.RemoveIfExists(attribute.RecurringJobId);
 						continue;
 					}
-					_registry.Register(attribute.RecurringJobId, method, attribute.Cron, attribute.TimeZone, attribute.Queue);
+					_registry.Register(
+						attribute.RecurringJobId,
+						method,
+						attribute.Cron,
+						string.IsNullOrEmpty(attribute.TimeZone) ? TimeZoneInfo.Utc : TimeZoneInfo.FindSystemTimeZoneById(attribute.TimeZone),
+						attribute.Queue ?? EnqueuedState.DefaultQueue);
 				}
 			}
 		}

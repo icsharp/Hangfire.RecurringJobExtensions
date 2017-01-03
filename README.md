@@ -107,7 +107,7 @@ JSON Token | Description
 **job-name** | *[required]* The job name to `RecurringJob`.
 **job-type** | *[required]* The job type while impl the interface `IRecurringJob`.
 **cron-expression** | *[required]* Cron expressions.
-timezone | *[optional]* Default value is `TimeZoneInfo.Local`.
+timezone | *[optional]* Default value is `TimeZoneInfo.Utc`.
 queue | *[optional]* The specified queue name , default value is `default`.
 job-data | *[optional]* Similar to the [quartz.net](http://www.quartz-scheduler.net/) `JobDataMap`, it is can be deserialized to the type `Dictionary<string,object>`.
 enable | *[optional]* Whether the `RecurringJob` can be added/updated, default value is true, if false `RecurringJob` will be deleted automatically.

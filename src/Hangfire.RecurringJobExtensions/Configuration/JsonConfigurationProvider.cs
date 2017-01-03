@@ -51,7 +51,7 @@ namespace Hangfire.RecurringJobExtensions.Configuration
 #endif
 				Cron = option.Cron,
 				Queue = option.Queue ?? EnqueuedState.DefaultQueue,
-				TimeZone = option.TimeZone ?? TimeZoneInfo.Local,
+				TimeZone = option.TimeZone ?? TimeZoneInfo.Utc,
 				ExtendedData = option.ExtendedData,
 				Enable = option.Enable ?? true
 			};

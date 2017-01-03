@@ -27,6 +27,10 @@ namespace Hangfire.Samples
 			var simpleObject = context.GetJobData<SimpleObject>("SimpleObject");
 
 			context.WriteLine($"IntVal:{intVal},StringVal:{stringVal},BooleanVal:{booleanVal},simpleObject:{JobHelper.ToJson(simpleObject)}");
+
+			context.SetJobData("IntVal", ++intVal);
+
+			context.WriteLine($"IntVal changed to {intVal}");
 		}
 	}
 }
