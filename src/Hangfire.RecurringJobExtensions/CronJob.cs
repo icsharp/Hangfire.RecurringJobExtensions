@@ -7,23 +7,23 @@ using Hangfire.RecurringJobExtensions.Configuration;
 namespace Hangfire.RecurringJobExtensions
 {
 	/// <summary>
-	/// 
+	/// The helper class to build <see cref="RecurringJob"/> automatically.
 	/// </summary>
 	public class CronJob
 	{
 		/// <summary>
-		/// 
+		/// Builds <see cref="RecurringJob"/> automatically within specified interface or class.
 		/// </summary>
-		/// <param name="types"></param>
+		/// <param name="types">Specified interface or class</param>
 		public static void AddOrUpdate(params Type[] types)
 		{
 			AddOrUpdate(() => types);
 		}
 
 		/// <summary>
-		/// 
+		/// Builds <see cref="RecurringJob"/> automatically within specified interface or class.
 		/// </summary>
-		/// <param name="typesProvider"></param>
+		/// <param name="typesProvider">The provider to get specified interfaces or class.</param>
 		public static void AddOrUpdate(Func<IEnumerable<Type>> typesProvider)
 		{
 			if (typesProvider == null) throw new ArgumentNullException(nameof(typesProvider));
@@ -34,10 +34,10 @@ namespace Hangfire.RecurringJobExtensions
 		}
 
 		/// <summary>
-		/// 
+		/// Builds <see cref="RecurringJob"/> automatically by using multiple JSON configuration files.
 		/// </summary>
-		/// <param name="jsonFiles"></param>
-		/// <param name="reloadOnChange"></param>
+		/// <param name="jsonFiles">The array of json files.</param>
+		/// <param name="reloadOnChange">Whether the <see cref="RecurringJob"/> should be reloaded if the file changes.</param>
 		public static void AddOrUpdate(string[] jsonFiles, bool reloadOnChange = true)
 		{
 			if (jsonFiles == null) throw new ArgumentNullException(nameof(jsonFiles));
@@ -46,10 +46,10 @@ namespace Hangfire.RecurringJobExtensions
 				AddOrUpdate(jsonFile, reloadOnChange);
 		}
 		/// <summary>
-		/// 
+		/// Builds <see cref="RecurringJob"/> automatically by using a JSON configuration.
 		/// </summary>
-		/// <param name="jsonFile"></param>
-		/// <param name="reloadOnChange"></param>
+		/// <param name="jsonFile">Json file for <see cref="RecurringJob"/> configuration.</param>
+		/// <param name="reloadOnChange">Whether the <see cref="RecurringJob"/> should be reloaded if the file changes.</param>
 		public static void AddOrUpdate(string jsonFile, bool reloadOnChange = true)
 		{
 			if (jsonFile == null) throw new ArgumentNullException(nameof(jsonFile));
@@ -72,9 +72,9 @@ namespace Hangfire.RecurringJobExtensions
 		}
 
 		/// <summary>
-		/// 
+		/// Builds <see cref="RecurringJob"/> automatically with <seealso cref="IConfigurationProvider"/>.
 		/// </summary>
-		/// <param name="provider"></param>
+		/// <param name="provider"><see cref="IConfigurationProvider"/></param>
 		public static void AddOrUpdate(IConfigurationProvider provider)
 		{
 			if (provider == null) throw new ArgumentNullException(nameof(provider));
@@ -84,6 +84,10 @@ namespace Hangfire.RecurringJobExtensions
 			AddOrUpdate(provider.Load());
 		}
 
+		/// <summary>
+		/// Builds <see cref="RecurringJob"/> automatically with the collection of <seealso cref="RecurringJobInfo"/>.
+		/// </summary>
+		/// <param name="recurringJobInfos">The collection of <see cref="RecurringJobInfo"/>.</param>
 		public static void AddOrUpdate(IEnumerable<RecurringJobInfo> recurringJobInfos)
 		{
 			if (recurringJobInfos == null) throw new ArgumentNullException(nameof(recurringJobInfos));
@@ -93,6 +97,10 @@ namespace Hangfire.RecurringJobExtensions
 			builder.Build(() => recurringJobInfos);
 		}
 
+		/// <summary>
+		/// Builds <see cref="RecurringJob"/> automatically with the array of <seealso cref="RecurringJobInfo"/>.
+		/// </summary>
+		/// <param name="recurringJobInfos">The array of <see cref="RecurringJobInfo"/>.</param>
 		public static void AddOrUpdate(params RecurringJobInfo[] recurringJobInfos)
 		{
 			if (recurringJobInfos == null) throw new ArgumentNullException(nameof(recurringJobInfos));

@@ -39,6 +39,8 @@ namespace Hangfire.RecurringJobExtensions
 
 			var paramValue = _connection.GetJobParameter(jobId, "RecurringJobId");
 
+			if (string.IsNullOrEmpty(paramValue)) throw new Exception($"There is not RecurringJobId with associated BackgroundJob Id:{jobId}");
+
 			var recurringJobId = JobHelper.FromJson<string>(paramValue);
 
 			return FindByRecurringJobId(recurringJobId);
