@@ -31,6 +31,12 @@ namespace Hangfire.Samples
 			context.SetJobData("IntVal", ++intVal);
 
 			context.WriteLine($"IntVal changed to {intVal}");
+
+			context.SetJobData("NewIntVal", 99);
+
+			var newIntVal = context.GetJobData<int>("NewIntVal");
+
+			context.WriteLine($"NewIntVal:{newIntVal}");
 		}
 	}
 }
