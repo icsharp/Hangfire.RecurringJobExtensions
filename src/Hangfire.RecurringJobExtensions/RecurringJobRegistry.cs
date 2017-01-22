@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq.Expressions;
 using System.Reflection;
+
 namespace Hangfire.RecurringJobExtensions
 {
 	/// <summary>
@@ -80,6 +81,11 @@ namespace Hangfire.RecurringJobExtensions
 			if (recurringJobInfo == null) throw new ArgumentNullException(nameof(recurringJobInfo));
 
 			Register(recurringJobInfo.RecurringJobId, recurringJobInfo.Method, recurringJobInfo.Cron, recurringJobInfo.TimeZone, recurringJobInfo.Queue);
+
+			using (var storage = new RecurringJobInfoStorage())
+			{
+				storage.SetJobData(recurringJobInfo);
+			}
 		}
 	}
 }

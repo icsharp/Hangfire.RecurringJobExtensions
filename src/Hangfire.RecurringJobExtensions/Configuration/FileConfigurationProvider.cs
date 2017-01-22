@@ -17,32 +17,37 @@ namespace Hangfire.RecurringJobExtensions.Configuration
 		private const int DelayOnRetry = 1000;
 
 		private static readonly ILog _logger = LogProvider.For<FileConfigurationProvider>();
-		private readonly FileSystemWatcher _fileWatcher;
+		private FileSystemWatcher _fileWatcher;
 		private readonly object _fileWatcherLock = new object();
-		private readonly IRecurringJobBuilder _builder;
 
 		/// <summary>
 		/// Initializes a new <see cref="IConfigurationProvider"/>
 		/// </summary>
-		/// <param name="builder">The builder for <see cref="IRecurringJobBuilder"/>.</param>
 		/// <param name="configFile">The source settings file.</param>
 		/// <param name="reloadOnChange">Whether the <see cref="RecurringJob"/> should be reloaded if the file changes.</param>
-		public FileConfigurationProvider(IRecurringJobBuilder builder, string configFile, bool reloadOnChange = true)
+		public FileConfigurationProvider(string configFile, bool reloadOnChange = true)
+			: this(new FileInfo(configFile), reloadOnChange) { }
+
+		public FileConfigurationProvider(FileInfo fileInfo, bool reloadOnChange = true)
 		{
-			_builder = builder;
+			if (fileInfo == null) throw new ArgumentNullException(nameof(fileInfo));
 
-			ConfigFile = configFile;
+			if (!fileInfo.Exists)
+				throw new FileNotFoundException($"The json file {fileInfo.FullName} does not exist.");
 
-			if (!File.Exists(configFile))
-				throw new FileNotFoundException($"The json file {configFile} does not exist.");
+			ConfigFile = fileInfo;
 
-			_fileWatcher = new FileSystemWatcher(Path.GetDirectoryName(configFile), Path.GetFileName(configFile));
+			ReloadOnChange = reloadOnChange;
 
-			_fileWatcher.EnableRaisingEvents = reloadOnChange;
+			Initialize();
+		}
+		private void Initialize()
+		{
+			_fileWatcher = new FileSystemWatcher(ConfigFile.DirectoryName, ConfigFile.Name);
+			_fileWatcher.EnableRaisingEvents = ReloadOnChange;
 			_fileWatcher.Changed += OnChanged;
 			_fileWatcher.Error += OnError;
 		}
-
 		private void OnError(object sender, ErrorEventArgs e)
 		{
 			_logger.InfoException($"File {ConfigFile} occurred errors.", e.GetException());
@@ -54,45 +59,20 @@ namespace Hangfire.RecurringJobExtensions.Configuration
 			{
 				_logger.Info($"File {e.Name} changed, try to reload configuration again...");
 
-				var recurringJobInfos = Load().ToList();
+				var recurringJobInfos = Load().ToArray();
 
-				if (recurringJobInfos == null || recurringJobInfos.Count == 0) return;
+				if (recurringJobInfos == null || recurringJobInfos.Length == 0) return;
 
-				_builder.Build(() => recurringJobInfos);
-
-				var serverFilter = FindServerFilter();
-
-				if (serverFilter == null) return;
-
-				foreach (var recurringJobInfo in recurringJobInfos)
-				{
-					if (!recurringJobInfo.Enable
-						|| recurringJobInfo.ExtendedData == null
-						|| recurringJobInfo.ExtendedData.Count == 0)
-					{
-						RecurringJobInfo job = null;
-						serverFilter.RecurringJobInfos.TryRemove(recurringJobInfo.ToString(), out job);
-						continue;
-					}
-					serverFilter.RecurringJobInfos.AddOrUpdate(
-						 recurringJobInfo.ToString(),
-						 recurringJobInfo,
-						 (key, oldValue) => (recurringJobInfo != oldValue) ? recurringJobInfo : oldValue);
-				}
+				CronJob.AddOrUpdate(recurringJobInfos);
 			}
-		}
-
-		private ExtendedDataJobFilter FindServerFilter()
-		{
-			var jobFilter = GlobalJobFilters.Filters.FirstOrDefault(x => x.Instance.GetType() == typeof(ExtendedDataJobFilter));
-
-			return jobFilter.Instance as ExtendedDataJobFilter;
 		}
 
 		/// <summary>
 		/// <see cref="RecurringJob"/> configuraion file
 		/// </summary>
-		public virtual string ConfigFile { get; set; }
+		public virtual FileInfo ConfigFile { get; set; }
+
+		public virtual bool ReloadOnChange { get; set; }
 
 		/// <summary>
 		/// Loads the data for this provider.
@@ -106,8 +86,8 @@ namespace Hangfire.RecurringJobExtensions.Configuration
 		/// <returns>The string content reading from file.</returns>
 		protected virtual string ReadFromFile()
 		{
-			if (!File.Exists(ConfigFile))
-				throw new FileNotFoundException($"The json file {ConfigFile} does not exist.");
+			if (!ConfigFile.Exists)
+				throw new FileNotFoundException($"The json file {ConfigFile.FullName} does not exist.");
 
 			var content = string.Empty;
 
@@ -116,7 +96,7 @@ namespace Hangfire.RecurringJobExtensions.Configuration
 				try
 				{
 					// Do stuff with file  
-					using (var file = new FileStream(ConfigFile, FileMode.OpenOrCreate, FileAccess.Read, FileShare.Read))
+					using (var file = ConfigFile.OpenRead())
 					using (StreamReader reader = new StreamReader(file))
 						content = reader.ReadToEnd();
 

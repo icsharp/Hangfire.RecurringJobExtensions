@@ -5,7 +5,7 @@
 		"xunit": "2.2.0-*",
 		"dotnet-test-xunit": "2.2.0-*",
 		"Moq": "4.6.38-alpha",
-		"Hangfire.RecurringJobExtensions": "1.1.4-*"
+		"Hangfire.RecurringJobExtensions": "1.1.5-*"
 	},
 
 	"frameworks": {

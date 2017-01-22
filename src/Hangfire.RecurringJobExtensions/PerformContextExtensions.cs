@@ -11,34 +11,29 @@ namespace Hangfire.RecurringJobExtensions
 	public static class PerformContextExtensions
 	{
 		/// <summary>
-		/// Gets job data from <see cref="PerformContext"/> if json configuration exists token 'job-data'.
+		/// Gets job data from storage with associated <see cref="RecurringJob"/>.
 		/// </summary>
 		/// <param name="context">The <see cref="PerformContext"/>.</param>
-		/// <param name="name">The dictionary key from the property <see cref="RecurringJobInfo.ExtendedData"/></param>
-		/// <returns>The value from the property <see cref="RecurringJobInfo.ExtendedData"/></returns>
+		/// <param name="name">The dictionary key from the property <see cref="RecurringJobInfo.JobData"/></param>
+		/// <returns>The value from the property <see cref="RecurringJobInfo.JobData"/></returns>
 		public static object GetJobData(this PerformContext context, string name)
 		{
 			if (string.IsNullOrEmpty(name)) throw new ArgumentNullException(nameof(name));
 
-			var jobDataKey = $"recurringjob-info-{context.BackgroundJob.Job.ToString()}";
+			var jobData = GetJobData(context);
 
-			if (!context.Items.ContainsKey(jobDataKey)) return null;
+			if (jobData == null) return null;
 
-			var jobData = context.Items[jobDataKey] as IDictionary<string, object>;
-
-			if (jobData == null || jobData.Count == 0) return null;
-
-			if (!jobData.ContainsKey(name)) return null;
-
-			return jobData[name];
+			return jobData.ContainsKey(name) ? jobData[name] : null;
 		}
+
 		/// <summary>
-		/// Gets job data from <see cref="PerformContext"/> if json configuration exists token 'job-data'.
+		/// Gets job data from storage with associated <see cref="RecurringJob"/>.
 		/// </summary>
 		/// <typeparam name="T">The specified type to json value.</typeparam>
 		/// <param name="context">The <see cref="PerformContext"/>.</param>
-		/// <param name="name">The dictionary key from the property <see cref="RecurringJobInfo.ExtendedData"/></param>
-		/// <returns>The value from the property <see cref="RecurringJobInfo.ExtendedData"/></returns>
+		/// <param name="name">The dictionary key from the property <see cref="RecurringJobInfo.JobData"/></param>
+		/// <returns>The value from the property <see cref="RecurringJobInfo.JobData"/></returns>
 		public static T GetJobData<T>(this PerformContext context, string name)
 		{
 			var o = GetJobData(context, name);
@@ -47,26 +42,54 @@ namespace Hangfire.RecurringJobExtensions
 
 			return JobHelper.FromJson<T>(json);
 		}
+
 		/// <summary>
-		/// Persists job data to <see cref="PerformContext"/>.
+		/// Gets job data from storage with associated <see cref="RecurringJob"/>.
 		/// </summary>
 		/// <param name="context">The <see cref="PerformContext"/>.</param>
-		/// <param name="name">The dictionary key from the property <see cref="RecurringJobInfo.ExtendedData"/></param>
+		/// <returns>The job data from storage.</returns>
+		public static IDictionary<string, object> GetJobData(this PerformContext context)
+		{
+			using (var storage = new RecurringJobInfoStorage(context.Connection))
+			{
+				return storage.FindByJobId(context.BackgroundJob.Id)?.JobData;
+			}
+		}
+
+		/// <summary>
+		/// Persists job data to storage with associated <see cref="RecurringJob"/>.
+		/// </summary>
+		/// <param name="context">The <see cref="PerformContext"/>.</param>
+		/// <param name="name">The dictionary key from the property <see cref="RecurringJobInfo.JobData"/></param>
 		/// <param name="value">The persisting value.</param>
 		public static void SetJobData(this PerformContext context, string name, object value)
 		{
 			if (string.IsNullOrEmpty(name)) throw new ArgumentNullException(nameof(name));
 
-			var jobDataKey = $"recurringjob-info-{context.BackgroundJob.Job.ToString()}";
+			SetJobData(context, new Dictionary<string, object> { [name] = value });
+		}
 
-			if (!context.Items.ContainsKey(jobDataKey))
-				throw new KeyNotFoundException($"The job data key: {jobDataKey} is not found.");
+		/// <summary>
+		/// Persists job data to storage with associated <see cref="RecurringJob"/>.
+		/// </summary>
+		/// <param name="context">The <see cref="PerformContext"/>.</param>
+		/// <param name="jobData">The dictionary value to be added or updated. </param>
+		public static void SetJobData(this PerformContext context, IDictionary<string, object> jobData)
+		{
+			if (jobData == null) throw new ArgumentNullException(nameof(jobData));
 
-			var jobData = context.Items[jobDataKey] as IDictionary<string, object>;
+			using (var storage = new RecurringJobInfoStorage(context.Connection))
+			{
+				var recurringJobInfo = storage.FindByJobId(context.BackgroundJob.Id);
 
-			if (jobData == null) jobData = new Dictionary<string, object>();
+				if (recurringJobInfo.JobData == null)
+					recurringJobInfo.JobData = new Dictionary<string, object>();
 
-			jobData[name] = value;
+				foreach (var kv in jobData)
+					recurringJobInfo.JobData[kv.Key] = kv.Value;
+
+				storage.SetJobData(recurringJobInfo);
+			}
 		}
 	}
 }

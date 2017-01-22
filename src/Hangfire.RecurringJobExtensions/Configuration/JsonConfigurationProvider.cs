@@ -15,11 +15,10 @@ namespace Hangfire.RecurringJobExtensions.Configuration
 		/// <summary>
 		/// Initializes a new <see cref="JsonConfigurationProvider"/>.
 		/// </summary>
-		/// <param name="builder">The builder for <see cref="IRecurringJobBuilder"/>.</param>
 		/// <param name="configFile">The source settings file.</param>
 		/// <param name="reloadOnChange">Whether the <see cref="RecurringJob"/> should be reloaded if the file changes.</param>
-		public JsonConfigurationProvider(IRecurringJobBuilder builder, string configFile, bool reloadOnChange = true)
-			: base(builder, configFile, reloadOnChange) { }
+		public JsonConfigurationProvider(string configFile, bool reloadOnChange = true)
+			: base(configFile, reloadOnChange) { }
 
 		/// <summary>
 		/// Loads the <see cref="RecurringJobInfo"/> for this source.
@@ -52,7 +51,7 @@ namespace Hangfire.RecurringJobExtensions.Configuration
 				Cron = option.Cron,
 				Queue = option.Queue ?? EnqueuedState.DefaultQueue,
 				TimeZone = option.TimeZone ?? TimeZoneInfo.Utc,
-				ExtendedData = option.ExtendedData,
+				JobData = option.JobData,
 				Enable = option.Enable ?? true
 			};
 		}

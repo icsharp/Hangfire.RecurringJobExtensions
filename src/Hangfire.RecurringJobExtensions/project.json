@@ -1,5 +1,5 @@
 {
-	"version": "1.1.4-*",
+	"version": "1.1.5-*",
 	"title": "Hangfire.RecurringJobExtensions",
 	"description": "Hangfire extensions for RecurringJob",
 	"authors": [ "icsharp" ],
@@ -19,7 +19,7 @@
 
 	"buildOptions": {
 		"warningsAsErrors": true,
-		"xmlDoc": true
+		"xmlDoc": false
 	},
 
 	"dependencies": {
@@ -29,7 +29,7 @@
 	"frameworks": {
 		"netstandard1.3": {
 			"dependencies": {
-				"System.IO.FileSystem.Watcher": "4.3.0"
+				"System.IO.FileSystem.Watcher": "4.0.0"
 			}
 		},
 		"net45": {

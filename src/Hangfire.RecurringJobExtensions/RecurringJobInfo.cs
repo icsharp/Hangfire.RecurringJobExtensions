@@ -32,9 +32,9 @@ namespace Hangfire.RecurringJobExtensions
 		/// </summary>
 		public MethodInfo Method { get; set; }
 		/// <summary>
-		/// The <see cref="RecurringJob"/> data persisted in <see cref="PerformContext"/> with server filter <seealso cref="ExtendedDataJobFilter"/>.  
+		/// The <see cref="RecurringJob"/> data persisted in <see cref="PerformContext"/> with server filter <seealso cref="RecurringJobDataFilter"/>.  
 		/// </summary>
-		public IDictionary<string, object> ExtendedData { get; set; }
+		public IDictionary<string, object> JobData { get; set; }
 
 		/// <summary>
 		/// Whether the <see cref="RecurringJob"/> can be added/updated,

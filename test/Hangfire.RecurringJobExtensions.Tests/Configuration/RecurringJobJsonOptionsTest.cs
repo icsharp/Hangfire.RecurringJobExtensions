@@ -36,7 +36,7 @@ namespace Hangfire.RecurringJobExtensions.Tests.Configuration
 				  JobType = typeof(MyJob1),
 				  Cron = "*/1 * * * *",
 				  Queue = "jobs" ,
-				  ExtendedData = new Dictionary<string, object>
+				  JobData = new Dictionary<string, object>
 				  {
 					["IntVal"] = 1,
 					["StringVal"] = "abcdef",

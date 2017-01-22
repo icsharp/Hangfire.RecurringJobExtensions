@@ -12,6 +12,8 @@ namespace Hangfire.RecurringJobExtensions
 	{
 		private IRecurringJobRegistry _registry;
 
+		public RecurringJobBuilder() : this(new RecurringJobRegistry()) { }
+
 		/// <summary>
 		/// Initializes a new instance of the <see cref="RecurringJobBuilder"/>	with <see cref="IRecurringJobRegistry"/>.
 		/// </summary>
@@ -20,7 +22,6 @@ namespace Hangfire.RecurringJobExtensions
 		{
 			_registry = registry;
 		}
-
 		/// <summary>
 		/// Create <see cref="RecurringJob"/> with the provider for specified interface or class.
 		/// </summary>

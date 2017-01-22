@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
-using Hangfire.Server;
 
 namespace Hangfire.RecurringJobExtensions.Configuration
 {
@@ -58,15 +57,15 @@ namespace Hangfire.RecurringJobExtensions.Configuration
 		/// <returns>true if value not null or empty, otherwise false.</returns>
 		public bool ShouldSerializeQueue() => !string.IsNullOrEmpty(Queue);
 		/// <summary>
-		/// The <see cref="RecurringJob"/> data persisted in <see cref="PerformContext"/> with server filter <seealso cref="ExtendedDataJobFilter"/>.  
+		/// The <see cref="RecurringJob"/> data persisted in <see cref="PerformContext"/> with server filter <seealso cref="RecurringJobDataFilter"/>.  
 		/// </summary>
 		[JsonProperty("job-data")]
-		public IDictionary<string, object> ExtendedData { get; set; }
+		public IDictionary<string, object> JobData { get; set; }
 		/// <summary>
-		/// Whether the property <see cref="ExtendedData"/> can be serialized or not.
+		/// Whether the property <see cref="JobData"/> can be serialized or not.
 		/// </summary>
 		/// <returns>true if value not null or count is zero, otherwise false.</returns>
-		public bool ShouldSerializeExtendedData() => ExtendedData != null && ExtendedData.Count > 0;
+		public bool ShouldSerializeJobData() => JobData != null && JobData.Count > 0;
 
 		/// <summary>
 		/// Whether the <see cref="RecurringJob"/> can be added/updated,

@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.IO;
 using Hangfire.RecurringJobExtensions.Configuration;
 
 namespace Hangfire.RecurringJobExtensions
@@ -32,9 +30,7 @@ namespace Hangfire.RecurringJobExtensions
 		{
 			if (typesProvider == null) throw new ArgumentNullException(nameof(typesProvider));
 
-			IRecurringJobBuilder builder = new RecurringJobBuilder(new RecurringJobRegistry());
-
-			builder.Build(typesProvider);
+			CronJob.AddOrUpdate(typesProvider);
 
 			return configuration;
 		}
@@ -49,26 +45,23 @@ namespace Hangfire.RecurringJobExtensions
 		{
 			if (jsonFile == null) throw new ArgumentNullException(nameof(jsonFile));
 
-			var configFile = Path.Combine(
-#if NET45
-				AppDomain.CurrentDomain.BaseDirectory,
-#else
-				AppContext.BaseDirectory,
-#endif
-				jsonFile);
+			CronJob.AddOrUpdate(jsonFile, reloadOnChange);
 
+			return configuration;
+		}
 
-			if (!File.Exists(configFile)) throw new FileNotFoundException($"The json file {configFile} does not exist.");
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="configuration"></param>
+		/// <param name="jsonFiles"></param>
+		/// <param name="reloadOnChange"></param>
+		/// <returns></returns>
+		public static IGlobalConfiguration UseRecurringJob(this IGlobalConfiguration configuration, string[] jsonFiles, bool reloadOnChange = true)
+		{
+			if (jsonFiles == null) throw new ArgumentNullException(nameof(jsonFiles));
 
-			IRecurringJobBuilder builder = new RecurringJobBuilder(new RecurringJobRegistry());
-
-			IConfigurationProvider provider = new JsonConfigurationProvider(builder, configFile, reloadOnChange);
-
-			var jobInfos = provider.Load().ToList();
-
-			builder.Build(() => jobInfos);
-
-			GlobalConfiguration.Configuration.UseFilter(new ExtendedDataJobFilter(jobInfos));
+			CronJob.AddOrUpdate(jsonFiles, reloadOnChange);
 
 			return configuration;
 		}
@@ -83,13 +76,7 @@ namespace Hangfire.RecurringJobExtensions
 		{
 			if (provider == null) throw new ArgumentNullException(nameof(provider));
 
-			IRecurringJobBuilder builder = new RecurringJobBuilder(new RecurringJobRegistry());
-
-			var jobInfos = provider.Load().ToList();
-
-			builder.Build(() => jobInfos);
-
-			GlobalConfiguration.Configuration.UseFilter(new ExtendedDataJobFilter(jobInfos));
+			CronJob.AddOrUpdate(provider);
 
 			return configuration;
 		}
