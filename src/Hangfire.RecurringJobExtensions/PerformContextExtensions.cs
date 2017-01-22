@@ -11,7 +11,7 @@ namespace Hangfire.RecurringJobExtensions
 	public static class PerformContextExtensions
 	{
 		/// <summary>
-		/// Gets job data from storage with associated <see cref="RecurringJob"/>.
+		/// Gets job data from storage associated with <see cref="RecurringJob"/>.
 		/// </summary>
 		/// <param name="context">The <see cref="PerformContext"/>.</param>
 		/// <param name="name">The dictionary key from the property <see cref="RecurringJobInfo.JobData"/></param>
@@ -28,7 +28,7 @@ namespace Hangfire.RecurringJobExtensions
 		}
 
 		/// <summary>
-		/// Gets job data from storage with associated <see cref="RecurringJob"/>.
+		/// Gets job data from storage associated with <see cref="RecurringJob"/>.
 		/// </summary>
 		/// <typeparam name="T">The specified type to json value.</typeparam>
 		/// <param name="context">The <see cref="PerformContext"/>.</param>
@@ -44,7 +44,7 @@ namespace Hangfire.RecurringJobExtensions
 		}
 
 		/// <summary>
-		/// Gets job data from storage with associated <see cref="RecurringJob"/>.
+		/// Gets job data from storage associated with <see cref="RecurringJob"/>.
 		/// </summary>
 		/// <param name="context">The <see cref="PerformContext"/>.</param>
 		/// <returns>The job data from storage.</returns>
@@ -57,7 +57,7 @@ namespace Hangfire.RecurringJobExtensions
 		}
 
 		/// <summary>
-		/// Persists job data to storage with associated <see cref="RecurringJob"/>.
+		/// Persists job data to storage associated with <see cref="RecurringJob"/>.
 		/// </summary>
 		/// <param name="context">The <see cref="PerformContext"/>.</param>
 		/// <param name="name">The dictionary key from the property <see cref="RecurringJobInfo.JobData"/></param>
@@ -70,7 +70,7 @@ namespace Hangfire.RecurringJobExtensions
 		}
 
 		/// <summary>
-		/// Persists job data to storage with associated <see cref="RecurringJob"/>.
+		/// Persists job data to storage associated with <see cref="RecurringJob"/>.
 		/// </summary>
 		/// <param name="context">The <see cref="PerformContext"/>.</param>
 		/// <param name="jobData">The dictionary value to be added or updated. </param>

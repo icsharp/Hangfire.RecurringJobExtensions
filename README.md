@@ -125,7 +125,7 @@ queue | *[optional]* The specified queue name , default value is `default`.
 job-data | *[optional]* Similar to the [quartz.net](http://www.quartz-scheduler.net/) `JobDataMap`, it is can be deserialized to the type `Dictionary<string,object>`.
 enable | *[optional]* Whether the `RecurringJob` can be added/updated, default value is true, if false `RecurringJob` will be deleted automatically.
 
-*To the json token `job-data`, we can use extension method to get/set data with specified key from `PerformContext` when recurring job running.*
+*To the json token `job-data`, we can use extension method to get/set data with specified key from storage which associated with `BackgroundJob.Id` when recurring job running.*
 
 ```csharp
 var intVal = context.GetJobData<int>("IntVal");
@@ -135,7 +135,21 @@ context.SetJobData("IntVal", ++intVal);
 
 ## Building RecurringJob
 
-Finally, we can use extension method `UseRecurringJob` to build `RecurringJob`. In .NET Core's Startup.cs.
+- Building with `CronJob`.
+
+In hangfire client, we can use the helper class `CronJob` to add or update recurringjob automatically.
+
+```csharp
+//Builds within specified interface or class.
+CronJob.AddOrUpdate(typeof(RecurringJobService1),typeof(RecurringJobService2));
+
+//Builds by using multiple JSON configuration files.
+CronJob.AddOrUpdate("recurringjob1.json","recurringjob2.json");
+```
+
+- Building with `IGlobalConfiguration`.
+
+Use `IGlobalConfiguration` extension method `UseRecurringJob` to build `RecurringJob`, in .NET Core's Startup.cs.
 
 ``` csharp
 public void ConfigureServices(IServiceCollection services)
