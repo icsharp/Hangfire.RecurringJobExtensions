@@ -12,6 +12,9 @@ namespace Hangfire.RecurringJobExtensions
 	{
 		private IRecurringJobRegistry _registry;
 
+		/// <summary>
+		/// Initializes a new instance of the <see cref="RecurringJobBuilder"/>.
+		/// </summary>
 		public RecurringJobBuilder() : this(new RecurringJobRegistry()) { }
 
 		/// <summary>

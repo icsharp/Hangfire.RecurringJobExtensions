@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
-using Hangfire.Server;
 
 namespace Hangfire.RecurringJobExtensions
 {
@@ -32,7 +31,7 @@ namespace Hangfire.RecurringJobExtensions
 		/// </summary>
 		public MethodInfo Method { get; set; }
 		/// <summary>
-		/// The <see cref="RecurringJob"/> data persisted in <see cref="PerformContext"/> with server filter <seealso cref="RecurringJobDataFilter"/>.  
+		/// The <see cref="RecurringJob"/> data persisted in storage.  
 		/// </summary>
 		public IDictionary<string, object> JobData { get; set; }
 

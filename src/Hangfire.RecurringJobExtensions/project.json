@@ -19,7 +19,7 @@
 
 	"buildOptions": {
 		"warningsAsErrors": true,
-		"xmlDoc": false
+		"xmlDoc": true
 	},
 
 	"dependencies": {

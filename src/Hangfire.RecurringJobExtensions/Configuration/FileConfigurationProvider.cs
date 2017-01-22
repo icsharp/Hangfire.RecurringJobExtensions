@@ -28,6 +28,11 @@ namespace Hangfire.RecurringJobExtensions.Configuration
 		public FileConfigurationProvider(string configFile, bool reloadOnChange = true)
 			: this(new FileInfo(configFile), reloadOnChange) { }
 
+		/// <summary>
+		/// Initializes a new <see cref="IConfigurationProvider"/>
+		/// </summary>
+		/// <param name="fileInfo">The source settings <see cref="FileInfo"/>.</param>
+		/// <param name="reloadOnChange">Whether the <see cref="RecurringJob"/> should be reloaded if the file changes.</param>
 		public FileConfigurationProvider(FileInfo fileInfo, bool reloadOnChange = true)
 		{
 			if (fileInfo == null) throw new ArgumentNullException(nameof(fileInfo));
@@ -72,6 +77,9 @@ namespace Hangfire.RecurringJobExtensions.Configuration
 		/// </summary>
 		public virtual FileInfo ConfigFile { get; set; }
 
+		/// <summary>
+		/// Whether the <see cref="RecurringJob"/> should be reloaded.
+		/// </summary>
 		public virtual bool ReloadOnChange { get; set; }
 
 		/// <summary>

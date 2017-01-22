@@ -5,14 +5,24 @@ using Hangfire.Storage;
 
 namespace Hangfire.RecurringJobExtensions
 {
+	/// <summary>
+	/// The storage APIs for <see cref="RecurringJobInfo"/>.
+	/// </summary>
 	public class RecurringJobInfoStorage : IRecurringJobInfoStorage
 	{
 		private static readonly TimeSpan LockTimeout = TimeSpan.FromMinutes(1);
 
 		private readonly IStorageConnection _connection;
 
+		/// <summary>
+		/// Initializes a new <see cref="RecurringJobInfoStorage"/>
+		/// </summary>
 		public RecurringJobInfoStorage() : this(JobStorage.Current.GetConnection()) { }
 
+		/// <summary>
+		/// Initializes a new <see cref="RecurringJobInfoStorage"/>
+		/// </summary>
+		/// <param name="connection"><see cref="IStorageConnection"/></param>
 		public RecurringJobInfoStorage(IStorageConnection connection)
 		{
 			if (connection == null) throw new ArgumentNullException(nameof(connection));
@@ -20,6 +30,10 @@ namespace Hangfire.RecurringJobExtensions
 			_connection = connection;
 		}
 
+		/// <summary>
+		/// Finds all <see cref="RecurringJobInfo"/> from storage.
+		/// </summary>
+		/// <returns>The collection of <see cref="RecurringJobInfo"/></returns>
 		public IEnumerable<RecurringJobInfo> FindAll()
 		{
 			var recurringJobIds = _connection.GetAllItemsFromSet("recurring-jobs");
@@ -33,6 +47,13 @@ namespace Hangfire.RecurringJobExtensions
 				yield return InternalFind(recurringJobId, recurringJob);
 			}
 		}
+
+		/// <summary>
+		/// Finds <see cref="RecurringJobInfo"/> by jobId.
+		/// The job id is associated with <seealso cref="BackgroundJob.Id"/>
+		/// </summary>
+		/// <param name="jobId">The specified <see cref="BackgroundJob.Id"/></param>
+		/// <returns><see cref="RecurringJobInfo"/></returns>
 		public RecurringJobInfo FindByJobId(string jobId)
 		{
 			if (string.IsNullOrEmpty(jobId)) throw new ArgumentNullException(nameof(jobId));
@@ -46,6 +67,11 @@ namespace Hangfire.RecurringJobExtensions
 			return FindByRecurringJobId(recurringJobId);
 		}
 
+		/// <summary>
+		/// Finds <see cref="RecurringJobInfo"/> by recurringJobId.
+		/// </summary>
+		/// <param name="recurringJobId">The specified identifier of the RecurringJob.</param>
+		/// <returns><see cref="RecurringJobInfo"/></returns>
 		public RecurringJobInfo FindByRecurringJobId(string recurringJobId)
 		{
 			if (string.IsNullOrEmpty(recurringJobId)) throw new ArgumentNullException(nameof(recurringJobId));
@@ -83,6 +109,10 @@ namespace Hangfire.RecurringJobExtensions
 			};
 		}
 
+		/// <summary>
+		/// Sets <see cref="RecurringJobInfo"/> to storage which associated with <see cref="RecurringJob"/>.
+		/// </summary>
+		/// <param name="recurringJobInfo">The specified identifier of the RecurringJob.</param>
 		public void SetJobData(RecurringJobInfo recurringJobInfo)
 		{
 			if (recurringJobInfo == null) throw new ArgumentNullException(nameof(recurringJobInfo));
@@ -101,6 +131,9 @@ namespace Hangfire.RecurringJobExtensions
 			}
 		}
 
+		/// <summary>
+		/// Disposes storage connection.
+		/// </summary>
 		public void Dispose()
 		{
 			_connection?.Dispose();

@@ -57,7 +57,7 @@ namespace Hangfire.RecurringJobExtensions.Configuration
 		/// <returns>true if value not null or empty, otherwise false.</returns>
 		public bool ShouldSerializeQueue() => !string.IsNullOrEmpty(Queue);
 		/// <summary>
-		/// The <see cref="RecurringJob"/> data persisted in <see cref="PerformContext"/> with server filter <seealso cref="RecurringJobDataFilter"/>.  
+		/// The <see cref="RecurringJob"/> data persisted in storage.  
 		/// </summary>
 		[JsonProperty("job-data")]
 		public IDictionary<string, object> JobData { get; set; }
