@@ -31,8 +31,7 @@
 
 	"buildOptions": {
 		"emitEntryPoint": true,
-		"preserveCompilationContext": true,
-		"copyToOutput": [ "recurringjob.json" ]
+		"preserveCompilationContext": true
 	},
 
 	"runtimeOptions": {
@@ -45,7 +44,8 @@
 		"include": [
 			"wwwroot",
 			"appsettings.json",
-			"web.config"
+			"web.config",
+			"recurringjob.json"
 		]
 	},
 

@@ -46,7 +46,7 @@ namespace Hangfire.RecurringJobExtensions
 		/// <returns><see cref="IGlobalConfiguration"/></returns>
 		public static IGlobalConfiguration UseRecurringJob(this IGlobalConfiguration configuration, string jsonFile, bool reloadOnChange = true)
 		{
-			if (jsonFile == null) throw new ArgumentNullException(nameof(jsonFile));
+			if (string.IsNullOrWhiteSpace(jsonFile)) throw new ArgumentNullException(nameof(jsonFile));
 
 			CronJob.AddOrUpdate(jsonFile, reloadOnChange);
 

@@ -52,7 +52,7 @@ namespace Hangfire.RecurringJobExtensions
 		/// <param name="reloadOnChange">Whether the <see cref="RecurringJob"/> should be reloaded if the file changes.</param>
 		public static void AddOrUpdate(string jsonFile, bool reloadOnChange = true)
 		{
-			if (jsonFile == null) throw new ArgumentNullException(nameof(jsonFile));
+			if (string.IsNullOrWhiteSpace(jsonFile)) throw new ArgumentNullException(nameof(jsonFile));
 
 			var configFile = File.Exists(jsonFile) ? jsonFile :
 				Path.Combine(
