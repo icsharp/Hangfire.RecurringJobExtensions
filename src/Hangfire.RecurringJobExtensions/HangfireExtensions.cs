@@ -11,7 +11,7 @@ namespace Hangfire.RecurringJobExtensions
 	{
 		/// <summary>
 		/// Builds <see cref="RecurringJob"/> automatically within specified interface or class.
-		/// To the Hangfire client, you can also use the class <seealso cref="CronJob"/> to add or update <see cref="RecurringJob"/> alternatively.
+		/// To the Hangfire client, alternatively way is to use the class <seealso cref="CronJob"/> to add or update <see cref="RecurringJob"/>.
 		/// </summary>
 		/// <param name="configuration"><see cref="IGlobalConfiguration"/></param>
 		/// <param name="types">Specified interface or class</param>
@@ -23,7 +23,7 @@ namespace Hangfire.RecurringJobExtensions
 
 		/// <summary>
 		/// Builds <see cref="RecurringJob"/> automatically within specified interface or class.
-		/// To the Hangfire client, you can also use the class <seealso cref="CronJob"/> to add or update <see cref="RecurringJob"/> alternatively.
+		/// To the Hangfire client, alternatively way is to use the class <seealso cref="CronJob"/> to add or update <see cref="RecurringJob"/>.
 		/// </summary>
 		/// <param name="configuration"><see cref="IGlobalConfiguration"/></param>
 		/// <param name="typesProvider">The provider to get specified interfaces or class.</param>
@@ -38,7 +38,7 @@ namespace Hangfire.RecurringJobExtensions
 		}
 		/// <summary>
 		/// Builds <see cref="RecurringJob"/> automatically by using a JSON configuration.
-		/// To the Hangfire client, you can also use the class <seealso cref="CronJob"/> to add or update <see cref="RecurringJob"/> alternatively.
+		/// To the Hangfire client, alternatively way is to use the class <seealso cref="CronJob"/> to add or update <see cref="RecurringJob"/>.
 		/// </summary>
 		/// <param name="configuration"><see cref="IGlobalConfiguration"/>.</param>
 		/// <param name="jsonFile">Json file for <see cref="RecurringJob"/> configuration.</param>
@@ -55,7 +55,7 @@ namespace Hangfire.RecurringJobExtensions
 
 		/// <summary>
 		/// Builds <see cref="RecurringJob"/> automatically by using multiple JSON configuration files.
-		/// To the Hangfire client, you can also use the class <seealso cref="CronJob"/> to add or update <see cref="RecurringJob"/> alternatively.
+		/// To the Hangfire client, alternatively way is to use the class <seealso cref="CronJob"/> to add or update <see cref="RecurringJob"/>.
 		/// </summary>
 		/// <param name="configuration"><see cref="IGlobalConfiguration"/>.</param>
 		/// <param name="jsonFiles">The array of json files.</param>
@@ -72,7 +72,7 @@ namespace Hangfire.RecurringJobExtensions
 
 		/// <summary>
 		/// Builds <see cref="RecurringJob"/> automatically with <seealso cref="IConfigurationProvider"/>.
-		/// To the Hangfire client, you can also use the class <seealso cref="CronJob"/> to add or update <see cref="RecurringJob"/> alternatively.
+		/// To the Hangfire client, alternatively way is to use the class <seealso cref="CronJob"/> to add or update <see cref="RecurringJob"/>.
 		/// </summary>
 		/// <param name="configuration"><see cref="IGlobalConfiguration"/>.</param>
 		/// <param name="provider"><see cref="IConfigurationProvider"/></param>
