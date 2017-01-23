@@ -51,6 +51,10 @@ namespace Hangfire.RecurringJobExtensions
 		/// <param name="queue">Queue name</param>
 		public RecurringJobAttribute(string cron, string timeZone, string queue)
 		{
+			if (string.IsNullOrEmpty(cron)) throw new ArgumentNullException(nameof(cron));
+			if (string.IsNullOrEmpty(timeZone)) throw new ArgumentNullException(nameof(timeZone));
+			if (string.IsNullOrEmpty(queue)) throw new ArgumentNullException(nameof(queue));
+
 			Cron = cron;
 			TimeZone = timeZone;
 			Queue = queue;
