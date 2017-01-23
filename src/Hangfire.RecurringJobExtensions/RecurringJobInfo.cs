@@ -40,14 +40,5 @@ namespace Hangfire.RecurringJobExtensions
 		/// default value is true, if false it will be deleted automatically.
 		/// </summary>
 		public bool Enable { get; set; }
-
-		/// <summary>
-		/// Returns a string that represents {<see cref="Method"/>.DeclaringType.Name}.{<see cref="Method"/>.Name} 
-		/// </summary>
-		/// <returns>A string that represents the current object.</returns>
-		public override string ToString()
-		{
-			return Method.GetRecurringJobId();
-		}
 	}
 }
