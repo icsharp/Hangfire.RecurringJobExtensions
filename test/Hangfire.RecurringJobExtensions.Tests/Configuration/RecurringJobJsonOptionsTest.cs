@@ -4,6 +4,7 @@ using System.IO;
 using Xunit;
 using Hangfire.RecurringJobExtensions.Configuration;
 using Hangfire.Common;
+using Newtonsoft.Json;
 
 namespace Hangfire.RecurringJobExtensions.Tests.Configuration
 {
@@ -66,6 +67,17 @@ namespace Hangfire.RecurringJobExtensions.Tests.Configuration
 
 			var o = JobHelper.FromJson<List<RecurringJobJsonOptions>>(jsonData);
 
+			Assert.Equal(2, o.Count);
+		}
+
+		/// <summary>
+		/// https://github.com/icsharp/Hangfire.RecurringJobExtensions/issues/5
+		/// </summary>
+		[Fact]
+		public void DeserializeRecurringJobJsonOptionsWithIssues5()
+		{
+			var data = File.ReadAllText("job1.json");
+			var o = JsonConvert.DeserializeObject<List<RecurringJobJsonOptions>>(data);
 			Assert.Equal(2, o.Count);
 		}
 	}

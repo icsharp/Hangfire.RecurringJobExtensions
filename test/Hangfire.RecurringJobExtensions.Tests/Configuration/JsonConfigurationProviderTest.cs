@@ -19,7 +19,7 @@ namespace Hangfire.RecurringJobExtensions.Tests.Configuration
 		[Fact]
 		public void Load_ThrowsAnException_WhenFileContentIsInvliadJsonData()
 		{
-			var provider = new JsonConfigurationProvider("project.json");
+			var provider = new JsonConfigurationProvider("error.json");
 
 			Assert.Throws<JsonSerializationException>(() => provider.Load().ToList());
 		}

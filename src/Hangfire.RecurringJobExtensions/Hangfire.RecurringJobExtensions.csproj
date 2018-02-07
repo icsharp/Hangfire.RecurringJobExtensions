@@ -1,0 +1,36 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>Hangfire extensions for RecurringJob</Description>
+    <AssemblyTitle>Hangfire.RecurringJobExtensions</AssemblyTitle>
+    <VersionPrefix>1.1.6</VersionPrefix>
+    <Authors>icsharp</Authors>
+    <TargetFrameworks>netstandard1.3;net45</TargetFrameworks>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <AssemblyName>Hangfire.RecurringJobExtensions</AssemblyName>
+    <PackageId>Hangfire.RecurringJobExtensions</PackageId>
+    <PackageTags>Hangfire;RecurringJob</PackageTags>
+    <PackageReleaseNotes>Add support for Hangfire RecurringJob extesions, we can use RecurringJobAttribute or Json configuration file to build RecurringJob automatically.</PackageReleaseNotes>
+    <PackageProjectUrl>https://github.com/icsharp/Hangfire.RecurringJobExtensions</PackageProjectUrl>
+    <PackageLicenseUrl>https://raw.githubusercontent.com/icsharp/Hangfire.RecurringJobExtensions/master/LICENSE</PackageLicenseUrl>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/icsharp/Hangfire.RecurringJobExtensions</RepositoryUrl>
+    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Hangfire.Core" Version="1.6.0" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard1.3' ">
+	<PackageReference Include="System.IO.FileSystem.Watcher" Version="4.0.0" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net45' ">
+    <PackageReference Include="Newtonsoft.Json" Version="5.0.1" />
+  </ItemGroup>
+
+</Project>
