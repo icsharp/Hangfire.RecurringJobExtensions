@@ -17,10 +17,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Hangfire.RecurringJobExtensions\Hangfire.RecurringJobExtensions.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Hangfire.Console" Version="1.1.5" />
     <PackageReference Include="Hangfire.AspNetCore" Version="1.6.7" />
     <PackageReference Include="Hangfire.Core" Version="1.6.7" />
@@ -30,6 +26,10 @@
     <PackageReference Include="Microsoft.AspNetCore.Server.IISIntegration" Version="1.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Server.Kestrel" Version="1.1.1" />
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="1.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Hangfire.RecurringJobExtensions\Hangfire.RecurringJobExtensions.csproj" />
   </ItemGroup>
 
 </Project>
