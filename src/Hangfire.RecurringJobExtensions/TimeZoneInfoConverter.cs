@@ -30,7 +30,7 @@ namespace Hangfire.RecurringJobExtensions
 
 			if (reader.Value == null) return null;
 
-			return TimeZoneInfo.FindSystemTimeZoneById(reader.Value.ToString());
+			return TimeZoneConverter.TZConvert.GetTimeZoneInfo(reader.Value.ToString());
 		}
 		/// <summary>
 		/// Writes the JSON representation of the <see cref="TimeZoneInfo"/>.
