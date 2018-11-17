@@ -8,3 +8,4 @@ test_script:
     cd test\Hangfire.RecurringJobExtensions.Tests
 
     dotnet test
+image: Visual Studio 2017

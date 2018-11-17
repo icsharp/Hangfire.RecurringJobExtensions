@@ -21,6 +21,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hangfire.Samples", "samples
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hangfire.RecurringJobExtensions.Tests", "test\Hangfire.RecurringJobExtensions.Tests\Hangfire.RecurringJobExtensions.Tests.csproj", "{B1AA8C91-161A-4A92-9B0A-B47742CDDB38}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hangfire.WebApi", "Hangfire.WebApi\Hangfire.WebApi.csproj", "{8D5930B9-B337-4722-86C0-F9229AC2960F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{B1AA8C91-161A-4A92-9B0A-B47742CDDB38}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B1AA8C91-161A-4A92-9B0A-B47742CDDB38}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B1AA8C91-161A-4A92-9B0A-B47742CDDB38}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8D5930B9-B337-4722-86C0-F9229AC2960F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8D5930B9-B337-4722-86C0-F9229AC2960F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8D5930B9-B337-4722-86C0-F9229AC2960F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8D5930B9-B337-4722-86C0-F9229AC2960F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -47,5 +53,9 @@ Global
 		{D75DFE5D-38CF-4150-8264-EB22E579237D} = {6E0E1A07-7311-4F8C-B1BD-B3803B6E621E}
 		{9DCBF5BA-414C-4E39-B264-CFD6C824AA66} = {B04B5FCE-89A8-4A3E-9671-CB3070C89AAF}
 		{B1AA8C91-161A-4A92-9B0A-B47742CDDB38} = {F5091E02-C3A4-407E-995C-86E07A801832}
+		{8D5930B9-B337-4722-86C0-F9229AC2960F} = {B04B5FCE-89A8-4A3E-9671-CB3070C89AAF}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C54AE9A2-40D8-41BF-8974-E0F16F4AB0C2}
 	EndGlobalSection
 EndGlobal

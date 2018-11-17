@@ -1,3 +1,9 @@
+# Hangfire.RecurringJobExtensions  Fork Version 
+--With encapsulation of the the interface ScheduleJobManager, which support DI. Like following:
+```csharp
+  await ScheduleJobManager.ExecuteScheduleAsync<SimpleJob, SimpleJobArgs1>(args1);
+  await ScheduleJobManager.ExecuteBackgroundJobAsync<SimpleJob2, SimpleJobArgs2>(null, TimeSpan.FromSeconds(55), args2);
+```
 # Hangfire.RecurringJobExtensions
 
 [![Official Site](https://img.shields.io/badge/site-hangfire.io-blue.svg)](http://hangfire.io)
